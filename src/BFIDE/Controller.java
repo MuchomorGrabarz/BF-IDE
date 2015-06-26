@@ -2,7 +2,6 @@ package BFIDE;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -12,16 +11,12 @@ import java.io.*;
 
 public class Controller {
     @FXML
-    MenuItem openFile;
-    @FXML
-    MenuItem saveFile;
-    @FXML
-    MenuItem saveFileAs;
-    @FXML
-    MenuItem closeFile;
-
-    @FXML
     TextArea codeArea;
+    @FXML
+    TextArea inputArea;
+    @FXML
+    TextArea outputArea;
+
 
     File currentFile = null;
 
@@ -62,5 +57,14 @@ public class Controller {
     }
     public void closeAction() {
         System.exit(0);
+    }
+    public void run() {
+        Interpreter interpreter = new Interpreter();
+
+        interpreter.setCode(codeArea.getText());
+        interpreter.setInput(inputArea.getText().concat(new Character((char) 255).toString()));
+        interpreter.setParser(new SimpleParser());
+
+        Platform.runLater(() -> outputArea.setText(interpreter.run()));
     }
 }
