@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,6 +28,11 @@ public class Controller {
     @FXML
     Pane tapePane;
     @FXML
+    HBox codeTape;
+    @FXML
+    HBox dataTape;
+
+    @FXML
     MenuButton modeMenu;
 
     @FXML
@@ -37,6 +43,9 @@ public class Controller {
     CodePreparer codePreparer;
     Debugger debugger;
     Interpreter interpreter;
+
+    TapeCaretaker codeTapeCaretaker;
+    TapeCaretaker dataTapeCaretaker;
 
     private enum State {DEBUGGER, INTERPRETER};
     State state;
@@ -52,6 +61,9 @@ public class Controller {
         codePreparer.setParser(new SimpleParser());
         debugger = new Debugger(inputArea, outputArea);
         interpreter = new Interpreter(inputArea, outputArea);
+
+        codeTapeCaretaker = new TapeCaretaker(codeTape);
+        dataTapeCaretaker = new TapeCaretaker(dataTape);
     }
 
     public void openFileAction() throws IOException {
@@ -120,8 +132,8 @@ public class Controller {
     }
 
     public void setDebuggerMode() {
-        tapePane.setMaxHeight(100);
-        tapePane.setMinHeight(100);
+        tapePane.setMaxHeight(150);
+        tapePane.setMinHeight(150);
 
         state = State.DEBUGGER;
         Platform.runLater(() -> modeMenu.setText("Debugger"));
@@ -137,9 +149,9 @@ public class Controller {
     }
 
     public void next() {
-        debugger.run();
+        new Thread(() -> debugger.run()).start();
     }
     public void nextStep() {
-        debugger.singleStep();
+        new Thread(() -> debugger.singleStep()).start();
     }
 }

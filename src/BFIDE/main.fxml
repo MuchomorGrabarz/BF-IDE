@@ -13,7 +13,16 @@
       <children>
         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#next" prefWidth="56.0" text="Run" />
         <Button layoutX="79.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextStep" prefWidth="100.0" text="Single step" />
+        <HBox fx:id="codeTape" layoutX="14.0" layoutY="50.0" prefHeight="36.0" prefWidth="1086.0000999999975" spacing="5.0">
+          <padding>
+            <Insets top="10.0" fx:id="x1" />
+          </padding>
+        </HBox>
+        <HBox id="codeTape" fx:id="dataTape" layoutX="14.0" layoutY="95.0" padding="$x1" prefHeight="36.0" prefWidth="1086.0000999999975" spacing="5.0" />
       </children>
+      <BorderPane.margin>
+        <Insets />
+      </BorderPane.margin>
     </Pane>
   </bottom>
   <center>
@@ -22,7 +31,7 @@
   <right>
     <BorderPane prefHeight="286.0" prefWidth="138.0">
       <bottom>
-        <VBox prefHeight="286.0" prefWidth="148.0">
+        <VBox prefHeight="188.0" prefWidth="138.0">
           <children>
             <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
             <TextArea id="in" fx:id="inputArea" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
