@@ -43,9 +43,11 @@ public class Controller {
         Platform.runLater(() -> codeArea.setText(finalResult));
     }
     public void saveFileAction() throws IOException {
-        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile)));
-        output.write(codeArea.getText());
-        output.close();
+        if(currentFile != null) {
+            BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile)));
+            output.write(codeArea.getText());
+            output.close();
+        }
     }
     public void saveFileAsAction() throws IOException {
         Stage fileStage = new Stage();
@@ -53,9 +55,10 @@ public class Controller {
         fileChooser.setTitle("Save");
         File selectedFile = fileChooser.showSaveDialog(fileStage);
 
-        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile)));
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(selectedFile)));
         output.write(codeArea.getText());
         output.close();
+
     }
     public void closeAction() {
         System.exit(0);

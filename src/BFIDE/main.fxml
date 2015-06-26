@@ -31,9 +31,9 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#openFileAction" text="Open" fx:id="openFile" />
-            <MenuItem mnemonicParsing="false" text="Save" fx:id="saveFile" />
-            <MenuItem mnemonicParsing="false" text="Save As ..." fx:id="saveFileAs" />
-            <MenuItem mnemonicParsing="false" text="Close" fx:id="closeFile" />
+            <MenuItem mnemonicParsing="false" onAction="#saveFileAction" text="Save" fx:id="saveFile" />
+            <MenuItem mnemonicParsing="false" onAction="#saveFileAsAction" text="Save As ..." fx:id="saveFileAs" />
+            <MenuItem mnemonicParsing="false" onAction="#closeAction" text="Close" fx:id="closeFile" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
