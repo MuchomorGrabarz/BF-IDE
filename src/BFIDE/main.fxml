@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" maxHeight="2000.0" maxWidth="2000.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="BFIDE.Controller">
+  <center>
+    <TextArea fx:id="codeArea" prefWidth="200.0" style="-fx-font-family: Monaco;" wrapText="true" />
+  </center>
+  <right>
+    <VBox prefHeight="376.0" prefWidth="126.0">
+      <children>
+        <Pane prefHeight="115.0" prefWidth="126.0" />
+        <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
+        <TextArea prefHeight="99.0" prefWidth="119.0" wrapText="true" />
+        <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Output" />
+        <TextArea editable="false" prefHeight="115.0" prefWidth="112.0" wrapText="true" />
+      </children>
+      <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </VBox>
+  </right>
+  <top>
+    <MenuBar useSystemMenuBar="true">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#openFileAction" text="Open" fx:id="openFile" />
+            <MenuItem mnemonicParsing="false" text="Save" fx:id="saveFile" />
+            <MenuItem mnemonicParsing="false" text="Save As ..." fx:id="saveFileAs" />
+            <MenuItem mnemonicParsing="false" text="Close" fx:id="closeFile" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Copy" />
+            <MenuItem mnemonicParsing="false" text="Cut" />
+            <MenuItem mnemonicParsing="false" text="Paste" />
+            <MenuItem mnemonicParsing="false" text="Settings" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help ">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Brainf**k basics" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+  </top>
+</BorderPane>
