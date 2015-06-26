@@ -9,7 +9,7 @@
 
 <BorderPane id="BorderPane" maxHeight="2000.0" maxWidth="2000.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="BFIDE.Controller">
   <bottom>
-    <Pane id="TapePane" fx:id="tapePane" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #222222;&#10;-fx-effect: innershadow(gaussian,black,10,0,0,0)">
+    <Pane id="TapePane" fx:id="tapePane" prefHeight="0.0" prefWidth="600.0" style="-fx-background-color: #222222;&#10;-fx-effect: innershadow(gaussian,black,10,0,0,0)">
       <children>
         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#next" prefWidth="56.0" text="Run" />
         <Button layoutX="79.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextStep" prefWidth="100.0" text="Single step" />
@@ -37,8 +37,8 @@
       <top>
         <Pane prefHeight="115.0" prefWidth="126.0">
           <children>
-            <Button fx:id="runButton" layoutX="9.0" layoutY="53.0" mnemonicParsing="false" onAction="#run" prefWidth="115.0" text="Prepare" />
-            <MenuButton fx:id="modeMenu" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefWidth="115.0" text="Debugger">
+            <Button fx:id="runButton" layoutX="9.0" layoutY="53.0" mnemonicParsing="false" onAction="#run" prefWidth="115.0" text="Run" />
+            <MenuButton fx:id="modeMenu" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefWidth="115.0" text="Interpreter">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#setInterpreterMode" text="Interpreter" />
                 <MenuItem mnemonicParsing="false" onAction="#setDebuggerMode" text="Debugger" />

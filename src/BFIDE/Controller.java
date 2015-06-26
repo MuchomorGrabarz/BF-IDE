@@ -10,9 +10,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.concurrent.ExecutionException;
 
 
 public class Controller {
+
+    static Controller me;
+
     @FXML
     TextArea codeArea;
     @FXML
@@ -38,7 +42,11 @@ public class Controller {
     State state;
 
     public Controller() {
-        state = State.DEBUGGER;
+        me = this;
+    }
+
+    public void init() {
+        state = State.INTERPRETER;
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
@@ -88,13 +96,27 @@ public class Controller {
     public void closeAction() {
         System.exit(0);
     }
+
     public void run() {
-        if(state == State.INTERPRETER) {
-            interpreter.run(codePreparer.run());
+        Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
+            try {
+                interpreter.run(codePreparer.run());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         else {
-            debugger.prepare(codePreparer.run());
-        }
+            try {
+                debugger.prepare(codePreparer.run());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }});
+        t.start();
     }
 
     public void setDebuggerMode() {
@@ -102,16 +124,16 @@ public class Controller {
         tapePane.setMinHeight(100);
 
         state = State.DEBUGGER;
-        modeMenu.setText("Debugger");
-        runButton.setText("Prepare");
+        Platform.runLater(() -> modeMenu.setText("Debugger"));
+        Platform.runLater(() -> runButton.setText("Prepare"));
     }
     public void setInterpreterMode() {
         tapePane.setMaxHeight(0);
         tapePane.setMinHeight(0);
 
         state = State.INTERPRETER;
-        modeMenu.setText("Interpreter");
-        runButton.setText("Run");
+        Platform.runLater(() -> modeMenu.setText("Interpreter"));
+        Platform.runLater(() -> runButton.setText("Run"));
     }
 
     public void next() {

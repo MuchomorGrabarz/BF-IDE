@@ -4,6 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.control.TextInputControl;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 public class Interpreter {
     private char[] tab = new char[30000];
     TextInputControl inputControl;
@@ -14,8 +17,10 @@ public class Interpreter {
         this.outputControl = outputControl;
     }
 
-    public void run(List<BFNode> nodes) {
-        String input = inputControl.getText();
+    public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
+        FutureTask<String> gibInput = new FutureTask<String>(() -> inputControl.getText());
+        Platform.runLater(gibInput);
+        String input = gibInput.get();
 
         for(int i = 0; i<30000; i++) tab[i] = 0;
 
