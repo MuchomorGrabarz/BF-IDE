@@ -8,26 +8,46 @@
 <?import javafx.scene.paint.*?>
 
 <BorderPane id="BorderPane" maxHeight="2000.0" maxWidth="2000.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="BFIDE.Controller">
+  <bottom>
+    <Pane id="TapePane" fx:id="tapePane" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #222222;&#10;-fx-effect: innershadow(gaussian,black,10,0,0,0)">
+      <children>
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#next" prefWidth="56.0" text="Run" />
+        <Button layoutX="79.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextStep" prefWidth="100.0" text="Single step" />
+      </children>
+    </Pane>
+  </bottom>
   <center>
     <TextArea fx:id="codeArea" prefWidth="200.0" style="-fx-font-family: Monaco;" wrapText="true" />
   </center>
   <right>
-    <VBox prefHeight="376.0" prefWidth="126.0">
-      <children>
+    <BorderPane prefHeight="286.0" prefWidth="138.0">
+      <bottom>
+        <VBox prefHeight="286.0" prefWidth="148.0">
+          <children>
+            <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
+            <TextArea id="in" fx:id="inputArea" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
+            <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Output" />
+            <TextArea fx:id="outputArea" editable="false" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
+          </children>
+          <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+          </padding>
+        </VBox>
+      </bottom>
+      <top>
         <Pane prefHeight="115.0" prefWidth="126.0">
           <children>
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#run" prefWidth="93.0" text="Run" />
+            <Button fx:id="runButton" layoutX="9.0" layoutY="53.0" mnemonicParsing="false" onAction="#run" prefWidth="115.0" text="Prepare" />
+            <MenuButton fx:id="modeMenu" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefWidth="115.0" text="Debugger">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#setInterpreterMode" text="Interpreter" />
+                <MenuItem mnemonicParsing="false" onAction="#setDebuggerMode" text="Debugger" />
+              </items>
+            </MenuButton>
           </children>
         </Pane>
-        <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
-        <TextArea id="in" fx:id="inputArea" prefHeight="99.0" prefWidth="119.0" wrapText="true" />
-        <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Output" />
-        <TextArea fx:id="outputArea" editable="false" prefHeight="115.0" prefWidth="112.0" wrapText="true" />
-      </children>
-      <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-      </padding>
-    </VBox>
+      </top>
+    </BorderPane>
   </right>
   <top>
     <MenuBar useSystemMenuBar="true">

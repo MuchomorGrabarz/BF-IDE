@@ -1,33 +1,25 @@
 package BFIDE;
 
-import java.util.*;
+import javafx.application.Platform;
+import javafx.scene.control.TextInputControl;
+
+import java.util.List;
 public class Interpreter {
-    String input;
-    String code;
-
-    Parser myParser;
-
     private char[] tab = new char[30000];
+    TextInputControl inputControl;
+    TextInputControl outputControl;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public void setInput(String input) {
-        this.input = input;
-    }
-    public void setParser(Parser p) {
-        myParser = p;
+    public Interpreter(TextInputControl inputControl, TextInputControl outputControl) {
+        this.inputControl = inputControl;
+        this.outputControl = outputControl;
     }
 
-    public String run() {
-        if(input == null) throw new RuntimeException("Input needed");
-        if(code == null) throw new RuntimeException("Code needed");
-        if(myParser == null) throw new RuntimeException("Parser needed");
+    public void run(List<BFNode> nodes) {
+        String input = inputControl.getText();
 
-        List<BFNode> nodes = myParser.parse(code);
         for(int i = 0; i<30000; i++) tab[i] = 0;
 
-        int codePos = 0, inputPos = 0, tapePos = 10000;
+        int codePos = 0, inputPos = 0, tapePos = 0;
 
         char[] inputTab = input.toCharArray();
         StringBuilder output = new StringBuilder();
@@ -62,6 +54,6 @@ public class Interpreter {
             codePos++;
         }
 
-        return output.toString();
+        Platform.runLater(() -> outputControl.setText(output.toString()));
     }
 }

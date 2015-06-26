@@ -2,7 +2,10 @@ package BFIDE;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -17,14 +20,39 @@ public class Controller {
     @FXML
     TextArea outputArea;
 
+    @FXML
+    Pane tapePane;
+    @FXML
+    MenuButton modeMenu;
+
+    @FXML
+    Button runButton;
 
     File currentFile = null;
+
+    CodePreparer codePreparer;
+    Debugger debugger;
+    Interpreter interpreter;
+
+    private enum State {DEBUGGER, INTERPRETER};
+    State state;
+
+    public Controller() {
+        state = State.DEBUGGER;
+
+        codePreparer = new CodePreparer(codeArea);
+        codePreparer.setParser(new SimpleParser());
+        debugger = new Debugger(inputArea, outputArea);
+        interpreter = new Interpreter(inputArea, outputArea);
+    }
 
     public void openFileAction() throws IOException {
         Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open");
         File selectedFile = fileChooser.showOpenDialog(fileStage);
+
+        if(selectedFile == null) return;
 
         String buffer = "";
         BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile)));
@@ -50,6 +78,8 @@ public class Controller {
         fileChooser.setTitle("Save");
         File selectedFile = fileChooser.showSaveDialog(fileStage);
 
+        if(selectedFile == null) return;
+
         BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(selectedFile)));
         output.write(codeArea.getText());
         output.close();
@@ -59,12 +89,35 @@ public class Controller {
         System.exit(0);
     }
     public void run() {
-        Interpreter interpreter = new Interpreter();
+        if(state == State.INTERPRETER) {
+            interpreter.run(codePreparer.run());
+        }
+        else {
+            debugger.prepare(codePreparer.run());
+        }
+    }
 
-        interpreter.setCode(codeArea.getText());
-        interpreter.setInput(inputArea.getText().concat(new Character((char) 255).toString()));
-        interpreter.setParser(new SimpleParser());
+    public void setDebuggerMode() {
+        tapePane.setMaxHeight(100);
+        tapePane.setMinHeight(100);
 
-        Platform.runLater(() -> outputArea.setText(interpreter.run()));
+        state = State.DEBUGGER;
+        modeMenu.setText("Debugger");
+        runButton.setText("Prepare");
+    }
+    public void setInterpreterMode() {
+        tapePane.setMaxHeight(0);
+        tapePane.setMinHeight(0);
+
+        state = State.INTERPRETER;
+        modeMenu.setText("Interpreter");
+        runButton.setText("Run");
+    }
+
+    public void next() {
+        debugger.run();
+    }
+    public void nextStep() {
+        debugger.singleStep();
     }
 }
