@@ -8,7 +8,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class Debugger {
-    private char[] tab = new char[30000];
+    private final Integer tapeSize = 30000;
+    private char[] tab = new char[tapeSize];
     TextInputControl inputControl;
     TextInputControl outputControl;
 
@@ -47,7 +48,7 @@ public class Debugger {
             e.printStackTrace();
         }
 
-        for(int i = 0; i<30000; i++) tab[i] = 0;
+        for(int i = 0; i<tapeSize; i++) tab[i] = 0;
         breakpoints = new HashSet<>();
 
         for(DebuggerListener l : listeners) l.kick();

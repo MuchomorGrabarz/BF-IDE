@@ -8,7 +8,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class Interpreter {
-    private char[] tab = new char[30000];
+    private final Integer tapeSize = 30000;
+    private char[] tab = new char[tapeSize];
     TextInputControl inputControl;
     TextInputControl outputControl;
 
@@ -22,7 +23,7 @@ public class Interpreter {
         Platform.runLater(gibInput);
         String input = gibInput.get();
 
-        for(int i = 0; i<30000; i++) tab[i] = 0;
+        for(int i = 0; i<tapeSize; i++) tab[i] = 0;
 
         int codePos = 0, inputPos = 0, tapePos = 0;
 
