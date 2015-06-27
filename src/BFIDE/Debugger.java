@@ -39,6 +39,7 @@ public class Debugger {
 
         FutureTask<String> stringTask = new FutureTask<>(() -> inputControl.getText());
         Platform.runLater(stringTask);
+        Platform.runLater(() -> outputControl.setText(""));
 
         try {
             inputTab = stringTask.get().toCharArray();
@@ -53,6 +54,7 @@ public class Debugger {
 
         for(DebuggerListener l : listeners) l.kick();
     }
+
     public void singleStep() {
         StringBuilder output = new StringBuilder();
 
@@ -114,7 +116,7 @@ public class Debugger {
         while(codeTapePos < nodes.size() && !breakpoints.contains(codeTapePos)) {
             switch (nodes.get(codeTapePos).getType()) {
                 case '>':
-                    codeTapePos++;
+                    dataTapePos++;
                     break;
                 case '<':
                     dataTapePos--;
