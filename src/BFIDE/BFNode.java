@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * Created by michaziobro on 26.06.2015.
- */
 public class BFNode {
     static final Character[] LEGAL_TYPES = {'>', '<', ',', '.', '+', '-', '[', ']'};
     public static final Set<Character> LegalTypes = new TreeSet<>(Arrays.asList(LEGAL_TYPES));

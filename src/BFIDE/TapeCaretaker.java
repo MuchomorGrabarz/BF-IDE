@@ -1,18 +1,23 @@
 package BFIDE;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 
-/**
- * Created by michaziobro on 26.06.2015.
- */
-public class TapeCaretaker extends HBox {
+import java.util.*;
+
+public class TapeCaretaker extends HBox implements DebuggerListener {
 
     HBox tape;
+    Debugger debugger;
 
-    public TapeCaretaker(HBox tape) {
+    public enum State {DATA, CODE};
+
+    State state;
+
+    public TapeCaretaker(HBox tape, Debugger debugger) {
 
         this.tape = tape;
 
@@ -34,5 +39,41 @@ public class TapeCaretaker extends HBox {
 
         this.tape.getChildren().get(0).setStyle("-fx-background-color: lightgreen;");
 
+        this.debugger = debugger;
+        this.debugger.registerListener(this);
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    @Override
+    public void kick() {
+        if(state == State.CODE) {
+            List<Character> actualCode = debugger.getActualCode();
+            int pos = debugger.getActualCodePos();
+
+            for (int i = 0; i < Integer.min(50, actualCode.size() - pos); i++) {
+                final int k = i;
+                Platform.runLater(() -> ((Label) this.tape.getChildren().get(k)).setText(String.valueOf(actualCode.get(pos + k))));
+            }
+            for(int i = actualCode.size() - pos; i < 50; i++) {
+                final int k = i;
+                Platform.runLater(() -> ((Label) this.tape.getChildren().get(k)).setText("0"));
+            }
+        }
+        if(state == State.DATA) {
+            List<Integer> actualData = debugger.getActualData();
+            int actualDataPos = debugger.getActualDataPos();
+
+            for (int i = 0; i < Integer.min(50, actualData.size() - actualDataPos); i++) {
+                final int k = i;
+                Platform.runLater(() -> ((Label) this.tape.getChildren().get(k)).setText(String.valueOf(actualData.get(actualDataPos + k))));
+            }
+            for(int i = actualData.size() - actualDataPos; i < 50; i++) {
+                final int k = i;
+                Platform.runLater(() -> ((Label) this.tape.getChildren().get(k)).setText("0"));
+            }
+        }
     }
 }

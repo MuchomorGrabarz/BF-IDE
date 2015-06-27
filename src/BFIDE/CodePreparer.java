@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-/**
- * Created by michaziobro on 26.06.2015.
- */
 public class CodePreparer {
     private Parser parser;
     public void setParser(Parser parser) {this.parser = parser;}

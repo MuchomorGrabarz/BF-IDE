@@ -62,8 +62,11 @@ public class Controller {
         debugger = new Debugger(inputArea, outputArea);
         interpreter = new Interpreter(inputArea, outputArea);
 
-        codeTapeCaretaker = new TapeCaretaker(codeTape);
-        dataTapeCaretaker = new TapeCaretaker(dataTape);
+        codeTapeCaretaker = new TapeCaretaker(codeTape,debugger);
+        codeTapeCaretaker.setState(TapeCaretaker.State.CODE);
+
+        dataTapeCaretaker = new TapeCaretaker(dataTape,debugger);
+        dataTapeCaretaker.setState(TapeCaretaker.State.DATA);
     }
 
     public void openFileAction() throws IOException {
