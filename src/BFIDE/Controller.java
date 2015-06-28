@@ -2,6 +2,9 @@ package BFIDE;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
@@ -149,6 +152,17 @@ public class Controller {
         state = State.INTERPRETER;
         Platform.runLater(() -> modeMenu.setText("Interpreter"));
         Platform.runLater(() -> runButton.setText("Run"));
+    }
+
+    public void convert() throws IOException {
+        Stage converterStage = new Stage();
+
+        Parent root = FXMLLoader.load(getClass().getResource("converter.fxml"));
+
+        ConverterController.me.init(converterStage,codeArea);
+
+        converterStage.setScene(new Scene(root));
+        converterStage.show();
     }
 
     public void next() {

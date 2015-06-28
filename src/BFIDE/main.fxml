@@ -77,6 +77,11 @@
             <MenuItem mnemonicParsing="false" text="Settings" />
           </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Code">
+          <items>
+            <MenuItem mnemonicParsing="false" onAction="#convert" text="Convert" />
+          </items>
+        </Menu>
         <Menu mnemonicParsing="false" text="Help ">
           <items>
             <MenuItem mnemonicParsing="false" text="Brainf**k basics" />
