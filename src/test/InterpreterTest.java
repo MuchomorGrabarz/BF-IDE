@@ -31,4 +31,26 @@ public class InterpreterTest {
         verify(stream).setText("a");
     }
 
+    @Test
+    public void testSimpleProgram2() throws Exception {
+        BiDirStream stream = mock(FXIO.class);
+
+        when(stream.getText()).thenReturn("ab");
+
+        List<BFNode> mockedCode = mock(ArrayList.class);
+
+        when(mockedCode.get(0)).thenReturn(new BFNode(','));
+        when(mockedCode.get(1)).thenReturn(new BFNode('>'));
+        when(mockedCode.get(2)).thenReturn(new BFNode(','));
+        when(mockedCode.get(3)).thenReturn(new BFNode('.'));
+        when(mockedCode.get(4)).thenReturn(new BFNode('<'));
+        when(mockedCode.get(5)).thenReturn(new BFNode('.'));
+
+        when(mockedCode.size()).thenReturn(new Integer(6));
+
+        Interpreter testedObj = new Interpreter(stream);
+        testedObj.run(mockedCode);
+
+        verify(stream).setText("ba");
+    }
 }
