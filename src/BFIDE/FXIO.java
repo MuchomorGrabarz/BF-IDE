@@ -1,11 +1,19 @@
 package BFIDE;
 
+import javafx.application.Platform;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 public class FXIO implements BiDirStream {
-    public String getText() {
+    public String getText() throws ExecutionException, InterruptedException {
+        FutureTask<String> gibInput = new FutureTask<String>(() -> Controller.me.inputArea.getText());
+        Platform.runLater(gibInput);
+        String input = gibInput.get();
         return Controller.me.inputArea.getText();
     }
 
     public void setText(String text) {
-        Controller.me.outputArea.setText(text);
+        Platform.runLater(() -> Controller.me.outputArea.setText(text));
     }
 }

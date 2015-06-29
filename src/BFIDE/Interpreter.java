@@ -1,10 +1,7 @@
 package BFIDE;
 
-import javafx.application.Platform;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 public class Interpreter {
     private final Integer tapeSize = 30000;
@@ -16,9 +13,7 @@ public class Interpreter {
     }
 
     public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
-        FutureTask<String> gibInput = new FutureTask<String>(() -> IO.getText());
-        Platform.runLater(gibInput);
-        String input = gibInput.get();
+        String input = IO.getText();
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
 
@@ -57,6 +52,6 @@ public class Interpreter {
             codePos++;
         }
 
-        Platform.runLater(() -> IO.setText(output.toString()));
+        IO.setText(output.toString());
     }
 }

@@ -1,15 +1,22 @@
 package test;
 
+import BFIDE.BFNode;
+import BFIDE.BiDirStream;
+import BFIDE.FXIO;
+import BFIDE.Interpreter;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
 
 public class InterpreterTest {
     @Test
     public void testSimpleProgram() throws Exception {
-        /*
-        TextInputControl mockedInput = mock(TextInputControl.class);
-        TextInputControl mockedOutput = mock(TextInputControl.class);
+        BiDirStream stream = mock(FXIO.class);
 
-        when(mockedInput.getText()).thenReturn("a");
+        when(stream.getText()).thenReturn("a");
 
         List<BFNode> mockedCode = mock(ArrayList.class);
 
@@ -18,11 +25,10 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(2));
 
-        Interpreter testedObj = new Interpreter(mockedInput, mockedOutput);
+        Interpreter testedObj = new Interpreter(stream);
         testedObj.run(mockedCode);
 
-        verify(mockedOutput).setText("a");
-        */
+        verify(stream).setText("a");
     }
 
 }
