@@ -1,7 +1,7 @@
 package test;
 
 import BFIDE.BFNode;
-import BFIDE.BiDirStream;
+import BFIDE.IO;
 import BFIDE.FXIO;
 import BFIDE.Interpreter;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 public class InterpreterTest {
     @Test
     public void testSimpleProgram() throws Exception {
-        BiDirStream stream = mock(FXIO.class);
+        IO stream = mock(FXIO.class);
 
         when(stream.getText()).thenReturn("a");
 
@@ -33,7 +33,7 @@ public class InterpreterTest {
 
     @Test
     public void testSimpleProgram2() throws Exception {
-        BiDirStream stream = mock(FXIO.class);
+        IO stream = mock(FXIO.class);
 
         when(stream.getText()).thenReturn("ab");
 

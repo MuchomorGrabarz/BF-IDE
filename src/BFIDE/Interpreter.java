@@ -6,9 +6,9 @@ import java.util.concurrent.ExecutionException;
 public class Interpreter {
     private final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
-    BiDirStream IO;
+    BFIDE.IO IO;
 
-    public Interpreter(BiDirStream stream) {
+    public Interpreter(BFIDE.IO stream) {
         IO = stream;
     }
 
@@ -37,6 +37,10 @@ public class Interpreter {
                     tab[tapePos] = (char) (((int) tab[tapePos] + 255)%256);
                     break;
                 case ',':
+                    if(inputPos >= inputTab.length) {
+                        IO.alert("Insufficient input given");
+                        return;
+                    }
                     tab[tapePos] = inputTab[inputPos++];
                     break;
                 case '.':
@@ -50,7 +54,19 @@ public class Interpreter {
                     break;
             }
             codePos++;
+
+            if(tapePos < 0) {
+                IO.alert("Program moved to negative tape indexes");
+                return;
+            }
+            if(tapePos >= tapeSize) {
+                IO.alert("Program went over the (" + String.valueOf(tapeSize) + ") tape size limit");
+                return;
+            }
+
         }
+
+        IO.alert("Program ended execution");
 
         IO.setText(output.toString());
     }
