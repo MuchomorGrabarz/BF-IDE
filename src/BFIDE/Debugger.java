@@ -68,6 +68,11 @@ public class Debugger {
             e.printStackTrace();
         }
 
+        if(codeTapePos >= nodes.size()) {
+            Platform.runLater(() -> Controller.me.logger.log("The program has already ended it's execution"));
+            return;
+        }
+
         switch (nodes.get(codeTapePos).getType()) {
             case '>':
                 dataTapePos++;
@@ -95,6 +100,9 @@ public class Debugger {
                 break;
         }
         codeTapePos++;
+
+        if(codeTapePos == nodes.size())
+            Platform.runLater(() -> Controller.me.logger.log("The program just ended execution"));
 
         Platform.runLater(() -> outputControl.setText(String.valueOf(output)));
 

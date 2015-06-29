@@ -21,6 +21,8 @@ public class Controller {
 
     static Controller me;
 
+    public MainLogger logger;
+
     @FXML
     TextArea codeArea;
     @FXML
@@ -59,6 +61,8 @@ public class Controller {
 
     public void init() {
         state = State.INTERPRETER;
+
+        logger = new MainLogger();
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
@@ -135,6 +139,22 @@ public class Controller {
             }
         }});
         t.start();
+    }
+
+    public void clearLogger() {
+        logger.clear();
+    }
+
+    public void addAlertLogger() {
+        logger.subscribeLogger(new LogAlerts());
+    }
+
+    public void addLoggingConsole() {
+        try {
+            logger.subscribeLogger((new Main()).startLogConsole());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setDebuggerMode() {
