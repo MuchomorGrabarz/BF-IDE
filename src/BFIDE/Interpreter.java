@@ -1,7 +1,6 @@
 package BFIDE;
 
 import javafx.application.Platform;
-import javafx.scene.control.TextInputControl;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -10,16 +9,14 @@ import java.util.concurrent.FutureTask;
 public class Interpreter {
     private final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
-    TextInputControl inputControl;
-    TextInputControl outputControl;
+    BiDirStream IO;
 
-    public Interpreter(TextInputControl inputControl, TextInputControl outputControl) {
-        this.inputControl = inputControl;
-        this.outputControl = outputControl;
+    public Interpreter(BiDirStream stream) {
+        IO = stream;
     }
 
     public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
-        FutureTask<String> gibInput = new FutureTask<String>(() -> inputControl.getText());
+        FutureTask<String> gibInput = new FutureTask<String>(() -> IO.getText());
         Platform.runLater(gibInput);
         String input = gibInput.get();
 
@@ -60,6 +57,6 @@ public class Interpreter {
             codePos++;
         }
 
-        Platform.runLater(() -> outputControl.setText(output.toString()));
+        Platform.runLater(() -> IO.setText(output.toString()));
     }
 }

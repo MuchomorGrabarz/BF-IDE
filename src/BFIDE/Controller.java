@@ -63,7 +63,7 @@ public class Controller {
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
         debugger = new Debugger(inputArea, outputArea);
-        interpreter = new Interpreter(inputArea, outputArea);
+        interpreter = new Interpreter(new FXIO());
 
         codeTapeCaretaker = new TapeCaretaker(codeTape,debugger);
         codeTapeCaretaker.setState(TapeCaretaker.State.CODE);
