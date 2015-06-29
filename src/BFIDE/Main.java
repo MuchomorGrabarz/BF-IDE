@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -20,7 +19,7 @@ public class Main extends Application {
         Controller.me.init();
     }
 
-    public LogConsole startLogConsole() throws Exception {
+    /*public LoggerConsoleImplementation startLogConsole() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
         Stage stage = new Stage();
         stage.initModality(Modality.WINDOW_MODAL);
@@ -28,10 +27,10 @@ public class Main extends Application {
         stage.setScene(new Scene(root));
         stage.showAndWait();
 
-        LogConsole.me.init(stage);
+        LoggerConsoleImplementation.me.init(stage);
 
-        return LogConsole.me;
-    }
+        return LoggerConsoleImplementation.me;
+    }*/
 
 
     public static void main(String[] args) {

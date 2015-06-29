@@ -2,7 +2,7 @@ package BFIDE;
 
 import javafx.scene.control.Alert;
 
-public class LogAlerts implements LoggerImplementation {
+public class LoggerAlertImplementation implements LoggerImplementation {
     public void log(String text) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Some information");
@@ -11,5 +11,5 @@ public class LogAlerts implements LoggerImplementation {
         alert.showAndWait();
     }
 
-    public void close() {}
+   // public void close() {}
 }

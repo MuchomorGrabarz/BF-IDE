@@ -1,25 +1,24 @@
 package BFIDE;
 
-import java.util.ArrayList;
-
 public class MainLogger {
-    ArrayList<LoggerImplementation> loggers = new ArrayList<>();
 
-    public MainLogger() {
-        loggers.add(new LogAlerts());
+    static private MainLogger currentLogger;
+    private LoggerImplementation impl;
+
+
+    static public MainLogger getLogger() {
+        return currentLogger;
+    }
+    static public void setLogger(MainLogger newLogger) {
+         currentLogger = newLogger;
     }
 
-    public void subscribeLogger(LoggerImplementation logger) {
-        loggers.add(logger);
-    }
-
-    public void clear() {
-        loggers.clear();
+    public MainLogger(LoggerImplementation impl) {
+        this.impl = impl;
     }
 
     public void log(String text) {
-        for(LoggerImplementation logger : loggers)
-            logger.log(text);
+       impl.log(text);
     }
 
 }

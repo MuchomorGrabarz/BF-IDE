@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<BorderPane id="BorderPane" maxHeight="2000.0" maxWidth="2000.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.Controller">
+<BorderPane id="BorderPane" maxHeight="2000.0" maxWidth="2000.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.Controller">
   <bottom>
     <Pane id="TapePane" fx:id="tapePane" prefHeight="0.0" prefWidth="600.0" style="-fx-background-color: #222222;&#10;-fx-effect: innershadow(gaussian,black,10,0,0,0)">
       <children>
@@ -69,20 +69,17 @@
             <MenuItem fx:id="closeFile" mnemonicParsing="false" onAction="#closeAction" text="Close" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="Settings">
           <items>
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Settings" />
+            <MenuItem mnemonicParsing="false" text="Tape" />
+            <MenuItem mnemonicParsing="false" onAction="#showLoggerSettings" text="Logs" />
+            <MenuItem mnemonicParsing="false" text="Parser" />
           </items>
         </Menu>
             <Menu mnemonicParsing="false" text="Logging">
-              <items>
-                  <CheckMenuItem mnemonicParsing="false" onAction="#addAlertLogger" text="Alert on logs" />
-                  <CheckMenuItem mnemonicParsing="false" onAction="#addLoggingConsole" text="Logging console" />
-                <MenuItem mnemonicParsing="false" onAction="#clearLogger" text="clear" />
-              </items>
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showConsole" text="Show console" />
+               </items>
             </Menu>
         <Menu mnemonicParsing="false" text="Code">
           <items>
