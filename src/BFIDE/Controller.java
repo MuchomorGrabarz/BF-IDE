@@ -21,6 +21,8 @@ public class Controller {
 
     static Controller me;
 
+    public MainLogger logger;
+
     @FXML
     TextArea codeArea;
     @FXML
@@ -59,6 +61,8 @@ public class Controller {
 
     public void init() {
         state = State.INTERPRETER;
+
+        logger = new MainLogger(new LoggerConsoleImplementation());
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
@@ -116,6 +120,9 @@ public class Controller {
     }
 
     public void run() {
+
+        MainLogger.getLogger().log("Runned something.");
+
         Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
             try {
                 interpreter.run(codePreparer.run());
@@ -135,6 +142,33 @@ public class Controller {
             }
         }});
         t.start();
+    }
+
+    public void clearLogger() {
+        //logger.clear();
+    }
+
+    public void addAlertLogger() {
+        //logger.subscribeLogger(new LoggerAlertImplementation());
+    }
+
+    public void showConsole() {
+        try {
+            Pane root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
+            Stage consoleStage = new Stage();
+            consoleStage.setScene(new Scene(root,600,400));
+            consoleStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addLoggingConsole() {
+        /*try {
+            logger.subscribeLogger((new Main()).startLogConsole());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void setDebuggerMode() {
@@ -170,5 +204,16 @@ public class Controller {
     }
     public void nextStep() {
         new Thread(() -> debugger.singleStep()).start();
+    }
+
+    public void showLoggerSettings() {
+        try {
+            Pane root = FXMLLoader.load(getClass().getResource("loggerSettings.fxml"));
+            Stage loggerSettingsStage = new Stage();
+            loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
