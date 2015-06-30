@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Interpreter {
-    private final Integer tapeSize = 30000;
+    public final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
     BFIDE.IO IO;
 

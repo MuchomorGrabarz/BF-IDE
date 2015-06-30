@@ -1,9 +1,10 @@
 package test;
 
 import BFIDE.BFNode;
-import BFIDE.IO;
 import BFIDE.FXIO;
+import BFIDE.IO;
 import BFIDE.Interpreter;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,13 +13,18 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 public class InterpreterTest {
+    IO stream;
+    List<BFNode> mockedCode;
+
+    @Before
+    public void mockStreamAndList() {
+        stream = mock(FXIO.class);
+        mockedCode = mock(ArrayList.class);
+    }
+
     @Test
     public void testSimpleProgram() throws Exception {
-        IO stream = mock(FXIO.class);
-
         when(stream.getText()).thenReturn("a");
-
-        List<BFNode> mockedCode = mock(ArrayList.class);
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('.'));
@@ -33,11 +39,7 @@ public class InterpreterTest {
 
     @Test
     public void testSimpleProgram2() throws Exception {
-        IO stream = mock(FXIO.class);
-
         when(stream.getText()).thenReturn("ab");
-
-        List<BFNode> mockedCode = mock(ArrayList.class);
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('>'));
@@ -56,11 +58,7 @@ public class InterpreterTest {
 
     @Test
     public void testLeftBoundCheck() throws Exception {
-        IO stream = mock(FXIO.class);
-
         when(stream.getText()).thenReturn("");
-
-        List<BFNode> mockedCode = mock(ArrayList.class);
 
         when(mockedCode.get(0)).thenReturn(new BFNode('<'));
 
@@ -74,17 +72,37 @@ public class InterpreterTest {
 
     @Test
     public void testRightBoundCheck() throws Exception {
-        //to be done, need to know how to get tape length first
-        return;
+        when(stream.getText()).thenReturn("");
+
+        Interpreter testObj = new Interpreter(stream);
+
+        when(mockedCode.size()).thenReturn(testObj.tapeSize);
+
+        when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
+
+        testObj.run(mockedCode);
+
+        verify(stream).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
+    }
+
+    @Test
+    public void testTapeSize() throws Exception {
+        when(stream.getText()).thenReturn("");
+
+        Interpreter testObj = new Interpreter(stream);
+
+        when(mockedCode.size()).thenReturn(testObj.tapeSize - 1);
+
+        when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
+
+        testObj.run(mockedCode);
+
+        verify(stream, never()).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
     }
 
     @Test
     public void testInsufficientInput() throws Exception {
-        IO stream = mock(FXIO.class);
-
         when(stream.getText()).thenReturn("");
-
-        List<BFNode> mockedCode = mock(ArrayList.class);
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
 
