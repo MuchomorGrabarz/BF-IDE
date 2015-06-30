@@ -1,7 +1,7 @@
 package test;
 
 import BFIDE.BFNode;
-import BFIDE.BiDirStream;
+import BFIDE.IO;
 import BFIDE.FXIO;
 import BFIDE.Interpreter;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 public class InterpreterTest {
     @Test
     public void testSimpleProgram() throws Exception {
-        BiDirStream stream = mock(FXIO.class);
+        IO stream = mock(FXIO.class);
 
         when(stream.getText()).thenReturn("a");
 
@@ -33,7 +33,7 @@ public class InterpreterTest {
 
     @Test
     public void testSimpleProgram2() throws Exception {
-        BiDirStream stream = mock(FXIO.class);
+        IO stream = mock(FXIO.class);
 
         when(stream.getText()).thenReturn("ab");
 
@@ -52,5 +52,47 @@ public class InterpreterTest {
         testedObj.run(mockedCode);
 
         verify(stream).setText("ba");
+    }
+
+    @Test
+    public void testLeftBoundCheck() throws Exception {
+        IO stream = mock(FXIO.class);
+
+        when(stream.getText()).thenReturn("");
+
+        List<BFNode> mockedCode = mock(ArrayList.class);
+
+        when(mockedCode.get(0)).thenReturn(new BFNode('<'));
+
+        when(mockedCode.size()).thenReturn(new Integer(1));
+
+        Interpreter testedObj = new Interpreter(stream);
+        testedObj.run(mockedCode);
+
+        verify(stream).alert("Program moved to negative tape indexes");
+    }
+
+    @Test
+    public void testRightBoundCheck() throws Exception {
+        //to be done, need to know how to get tape length first
+        return;
+    }
+
+    @Test
+    public void testInsufficientInput() throws Exception {
+        IO stream = mock(FXIO.class);
+
+        when(stream.getText()).thenReturn("");
+
+        List<BFNode> mockedCode = mock(ArrayList.class);
+
+        when(mockedCode.get(0)).thenReturn(new BFNode(','));
+
+        when(mockedCode.size()).thenReturn(new Integer(1));
+
+        Interpreter testedObj = new Interpreter(stream);
+        testedObj.run(mockedCode);
+
+        verify(stream).alert("Insufficient input given");
     }
 }
