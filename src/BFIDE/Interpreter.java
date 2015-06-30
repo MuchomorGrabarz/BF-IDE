@@ -1,27 +1,19 @@
 package BFIDE;
 
-import javafx.application.Platform;
-import javafx.scene.control.TextInputControl;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 public class Interpreter {
-    private final Integer tapeSize = 30000;
+    public final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
-    TextInputControl inputControl;
-    TextInputControl outputControl;
+    BFIDE.IO IO;
 
-    public Interpreter(TextInputControl inputControl, TextInputControl outputControl) {
-        this.inputControl = inputControl;
-        this.outputControl = outputControl;
+    public Interpreter(BFIDE.IO stream) {
+        IO = stream;
     }
 
     public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
-        FutureTask<String> gibInput = new FutureTask<>(inputControl::getText);
-        Platform.runLater(gibInput);
-        String input = gibInput.get();
+        String input = IO.getText();
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
 
@@ -45,6 +37,10 @@ public class Interpreter {
                     tab[tapePos] = (char) (((int) tab[tapePos] + 255)%256);
                     break;
                 case ',':
+                    if(inputPos >= inputTab.length) {
+                        IO.alert("Insufficient input given");
+                        return;
+                    }
                     tab[tapePos] = inputTab[inputPos++];
                     break;
                 case '.':
@@ -58,8 +54,20 @@ public class Interpreter {
                     break;
             }
             codePos++;
+
+            if(tapePos < 0) {
+                IO.alert("Program moved to negative tape indexes");
+                return;
+            }
+            if(tapePos >= tapeSize) {
+                IO.alert("Program went over the (" + String.valueOf(tapeSize) + ") tape size limit");
+                return;
+            }
+
         }
 
-        Platform.runLater(() -> outputControl.setText(output.toString()));
+        IO.alert("Program ended execution");
+
+        IO.setText(output.toString());
     }
 }

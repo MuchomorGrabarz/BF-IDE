@@ -1,5 +1,5 @@
 package BFIDE;
 
 public interface LoggerImplementation {
-    public void log(String text);
+    void log(String text);
 }
