@@ -1,5 +1,9 @@
 package BFIDE;
 
+import BFIDE.IOWrapper.InputWrapper;
+import BFIDE.IOWrapper.LoggerWrapper;
+import BFIDE.IOWrapper.OutputWrapper;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 

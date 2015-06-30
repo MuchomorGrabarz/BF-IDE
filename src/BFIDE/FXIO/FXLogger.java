@@ -1,4 +1,7 @@
-package BFIDE;
+package BFIDE.FXIO;
+
+import BFIDE.IOWrapper.LoggerWrapper;
+import BFIDE.MainLogger;
 
 public class FXLogger implements LoggerWrapper {
     MainLogger logger;

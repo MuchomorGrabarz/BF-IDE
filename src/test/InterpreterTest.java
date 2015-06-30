@@ -1,6 +1,12 @@
 package test;
 
 import BFIDE.*;
+import BFIDE.FXIO.FXInput;
+import BFIDE.FXIO.FXLogger;
+import BFIDE.FXIO.FXOutput;
+import BFIDE.IOWrapper.InputWrapper;
+import BFIDE.IOWrapper.LoggerWrapper;
+import BFIDE.IOWrapper.OutputWrapper;
 import org.junit.Before;
 import org.junit.Test;
 

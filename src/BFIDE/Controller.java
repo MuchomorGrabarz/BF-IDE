@@ -1,5 +1,8 @@
 package BFIDE;
 
+import BFIDE.FXIO.FXInput;
+import BFIDE.FXIO.FXLogger;
+import BFIDE.FXIO.FXOutput;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,5 +1,6 @@
-package BFIDE;
+package BFIDE.FXIO;
 
+import BFIDE.IOWrapper.InputWrapper;
 import javafx.scene.control.TextArea;
 
 public class FXInput implements InputWrapper {
