@@ -1,17 +1,13 @@
 package BFIDE;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-/**
- * Created by grabarz_muchomor on 29.06.15.
- */
-public class LoggerSetingsController {
+public class LoggerSettingsController {
 
-    private enum State {ALERT,CONSOLE};
+    private enum State {ALERT,CONSOLE}
 
     private static State lastState = State.CONSOLE;
     private State currentState;
@@ -26,19 +22,19 @@ public class LoggerSetingsController {
         currentState = lastState;
     }
 
-    public void setAlerts(ActionEvent actionEvent) {
+    public void setAlerts() {
         currentState = State.ALERT;
         loggerImplMenu.setText("Alerts");
     }
-    public void setConsole(ActionEvent actionEvent) {
+    public void setConsole() {
         currentState = State.CONSOLE;
         loggerImplMenu.setText("Console");
     }
 
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         ((Stage) settingLoggerPane.getScene().getWindow()).close();
     }
-    public void ok(ActionEvent actionEvent) {
+    public void ok() {
         if(currentState == State.CONSOLE) {
             MainLogger.setLogger(new MainLogger(new LoggerConsoleImplementation()));
         } else {

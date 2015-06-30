@@ -13,7 +13,7 @@ public class Debugger {
     TextInputControl inputControl;
     TextInputControl outputControl;
 
-    List<DebuggerListener> listeners;
+    List<Listener> listeners;
 
     List<BFNode> nodes;
 
@@ -37,39 +37,35 @@ public class Debugger {
 
         this.nodes = nodes;
 
-        FutureTask<String> stringTask = new FutureTask<>(() -> inputControl.getText());
+        FutureTask<String> stringTask = new FutureTask<>(inputControl::getText);
         Platform.runLater(stringTask);
         Platform.runLater(() -> outputControl.setText(""));
 
         try {
             inputTab = stringTask.get().toCharArray();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
         breakpoints = new HashSet<>();
 
-        for(DebuggerListener l : listeners) l.kick();
+        listeners.forEach(Listener::punch);
     }
 
     public void singleStep() {
         StringBuilder output = new StringBuilder();
 
-        FutureTask<String> stringTask = new FutureTask<String>(() -> outputControl.getText());
+        FutureTask<String> stringTask = new FutureTask<>(outputControl::getText);
         Platform.runLater(stringTask);
         try {
             output.append(stringTask.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         if(codeTapePos >= nodes.size()) {
-            Platform.runLater(() -> Controller.me.logger.log("The program has already ended it's execution"));
+            Platform.runLater(() -> MainLogger.getLogger().log("The program has already ended it's execution"));
             return;
         }
 
@@ -102,22 +98,20 @@ public class Debugger {
         codeTapePos++;
 
         if(codeTapePos == nodes.size())
-            Platform.runLater(() -> Controller.me.logger.log("The program just ended execution"));
+            Platform.runLater(() -> MainLogger.getLogger().log("The program just ended execution"));
 
         Platform.runLater(() -> outputControl.setText(String.valueOf(output)));
 
-        for(DebuggerListener l : listeners) l.kick();
+        listeners.forEach(BFIDE.Listener::punch);
     }
     public void run() {
         StringBuilder output = new StringBuilder();
 
-        FutureTask<String> stringTask = new FutureTask<String>(() -> outputControl.getText());
+        FutureTask<String> stringTask = new FutureTask<>(outputControl::getText);
         Platform.runLater(stringTask);
         try {
             output.append(stringTask.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -152,7 +146,7 @@ public class Debugger {
         }
 
         Platform.runLater(() -> outputControl.setText(String.valueOf(output)));
-        for(DebuggerListener l : listeners) l.kick();
+        listeners.forEach(BFIDE.Listener::punch);
     }
 
     public void addBreakpoint(int pos) {
@@ -164,16 +158,13 @@ public class Debugger {
 
     //things for listeners
 
-    public void registerListener(DebuggerListener listener) {
+    public void registerListener(Listener listener) {
         listeners.add(listener);
     }
 
     public List<Character> getActualCode() {
         ArrayList<Character> result = new ArrayList<>();
-
-        for(BFNode n : nodes) {
-            result.add(n.getType());
-        }
+        nodes.forEach(x -> result.add(x.getType()));
 
         return result;
     }

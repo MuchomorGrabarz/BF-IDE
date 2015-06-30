@@ -18,11 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 
 public class Controller {
-
-    static Controller me;
-
-    public MainLogger logger;
-
     @FXML
     TextArea codeArea;
     @FXML
@@ -39,7 +34,6 @@ public class Controller {
 
     @FXML
     MenuButton modeMenu;
-
     @FXML
     Button runButton;
 
@@ -49,20 +43,15 @@ public class Controller {
     Debugger debugger;
     Interpreter interpreter;
 
-    TapeCaretaker codeTapeCaretaker;
-    TapeCaretaker dataTapeCaretaker;
+    TapeCaretaker codeTapeCaretaker, dataTapeCaretaker;
+    private Stage consoleStage = null;
 
-    private enum State {DEBUGGER, INTERPRETER};
+    private enum State {DEBUGGER, INTERPRETER}
+
     State state;
 
-    public Controller() {
-        me = this;
-    }
-
-    public void init() {
+    public void initialize() {
         state = State.INTERPRETER;
-
-        logger = new MainLogger(new LoggerConsoleImplementation());
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
@@ -84,11 +73,10 @@ public class Controller {
 
         if(selectedFile == null) return;
 
-        String buffer = "";
         BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(selectedFile)));
 
         final StringBuilder result = new StringBuilder();
-        input.lines().forEach(x -> result.append(x + "\n"));
+        input.lines().forEach(x -> result.append(x).append("\n"));
         input.close();
 
         final String finalResult = String.valueOf(result);
@@ -126,49 +114,33 @@ public class Controller {
         Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
             try {
                 interpreter.run(codePreparer.run());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
         else {
             try {
                 debugger.prepare(codePreparer.run());
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         }});
         t.start();
     }
 
-    public void clearLogger() {
-        //logger.clear();
-    }
-
-    public void addAlertLogger() {
-        //logger.subscribeLogger(new LoggerAlertImplementation());
-    }
-
     public void showConsole() {
-        try {
-            Pane root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
-            Stage consoleStage = new Stage();
-            consoleStage.setScene(new Scene(root,600,400));
+        if(consoleStage == null) {
+            try {
+                Pane root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
+                Stage consoleStage = new Stage();
+                consoleStage.setScene(new Scene(root, 600, 400));
+                consoleStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
             consoleStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
-
-    public void addLoggingConsole() {
-        /*try {
-            logger.subscribeLogger((new Main()).startLogConsole());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void setDebuggerMode() {
@@ -200,10 +172,10 @@ public class Controller {
     }
 
     public void next() {
-        new Thread(() -> debugger.run()).start();
+        new Thread(debugger::run).start();
     }
     public void nextStep() {
-        new Thread(() -> debugger.singleStep()).start();
+        new Thread(debugger::singleStep).start();
     }
 
     public void showLoggerSettings() {

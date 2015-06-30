@@ -15,23 +15,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 1000, 600));
 
         primaryStage.show();
-
-        Controller.me.init();
     }
-
-    /*public LoggerConsoleImplementation startLogConsole() throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
-        Stage stage = new Stage();
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setTitle("Log console");
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
-
-        LoggerConsoleImplementation.me.init(stage);
-
-        return LoggerConsoleImplementation.me;
-    }*/
-
 
     public static void main(String[] args) {
         launch(args);

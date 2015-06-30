@@ -8,12 +8,12 @@ import javafx.scene.text.TextAlignment;
 
 import java.util.*;
 
-public class TapeCaretaker extends HBox implements DebuggerListener {
+public class TapeCaretaker extends HBox implements Listener {
 
     HBox tape;
     Debugger debugger;
 
-    public enum State {DATA, CODE};
+    public enum State {DATA, CODE}
 
     State state;
 
@@ -48,7 +48,7 @@ public class TapeCaretaker extends HBox implements DebuggerListener {
     }
 
     @Override
-    public void kick() {
+    public void punch() {
         if(state == State.CODE) {
             List<Character> actualCode = debugger.getActualCode();
             int pos = debugger.getActualCodePos();

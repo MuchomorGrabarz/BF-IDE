@@ -1,8 +1,5 @@
 package BFIDE;
 
-/**
- * Created by michaziobro on 27.06.2015.
- */
 public class CConverterBuilder extends ConverterBuilder {
     @Override
     public void setPlusConversion() {

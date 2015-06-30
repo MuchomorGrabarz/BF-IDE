@@ -5,14 +5,11 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-/**
- * Created by michaziobro on 27.06.2015.
- */
 public class ConverterController {
 
     static public ConverterController me;
 
-    private enum State {NONE, C, ASSEMBLER};
+    private enum State {NONE, C, ASSEMBLER}
 
     State state = State.NONE;
     TextArea codeArea;

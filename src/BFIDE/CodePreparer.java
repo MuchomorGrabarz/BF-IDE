@@ -18,7 +18,7 @@ public class CodePreparer {
     }
 
     public List<BFNode> run() throws ExecutionException, InterruptedException {
-        FutureTask<String> gibCode = new FutureTask<String>(() -> code.getText());
+        FutureTask<String> gibCode = new FutureTask<String>(code::getText);
         Platform.runLater(gibCode);
         return parser.parse(gibCode.get());
     }

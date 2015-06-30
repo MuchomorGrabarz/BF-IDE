@@ -19,7 +19,7 @@ public class Interpreter {
     }
 
     public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
-        FutureTask<String> gibInput = new FutureTask<String>(() -> inputControl.getText());
+        FutureTask<String> gibInput = new FutureTask<>(inputControl::getText);
         Platform.runLater(gibInput);
         String input = gibInput.get();
 

@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 /**
  * Created by grabarz_muchomor on 29.06.15.
  */
-public class LogConsoleController implements ConsoleListener {
+public class LogConsoleController implements Listener {
     @FXML
     public TextArea logText;
 
@@ -20,7 +20,7 @@ public class LogConsoleController implements ConsoleListener {
     }
 
     @Override
-    public void update() {
+    public void punch() {
         logText.setText(String.join("\n", Console.getConsole().getLogs()));
     }
 }
