@@ -2,9 +2,6 @@ package BFIDE;
 
 import java.util.LinkedList;
 
-/**
- * Created by michaziobro on 27.06.2015.
- */
 public class ASMConverterBuilder extends ConverterBuilder {
     int labelNum = 0;
     LinkedList<Integer> stack = new LinkedList<>();

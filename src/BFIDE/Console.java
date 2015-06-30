@@ -2,9 +2,6 @@ package BFIDE;
 
 import java.util.*;
 
-/**
- * Created by grabarz_muchomor on 29.06.15.
- */
 public class Console {
 
     static private Console singleton = new Console();
@@ -13,24 +10,19 @@ public class Console {
     }
 
     private List<String> logs = new ArrayList<>();
-    private Set<ConsoleListener> listeners = new HashSet<>();
+    private Set<Listener> listeners = new HashSet<>();
 
     public void log(String newLog) {
         logs.add(newLog);
-        for(ConsoleListener cl : listeners) {
-            cl.update();
-        }
+        listeners.forEach(BFIDE.Listener::punch);
     }
 
     public List<String> getLogs() {
         return Collections.unmodifiableList(logs);
     }
 
-    public void registerListener(ConsoleListener l) {
+    public void registerListener(Listener l) {
         listeners.add(l);
-    }
-    public void removeListener(ConsoleListener l) {
-        listeners.remove(l);
     }
 
     private Console() {

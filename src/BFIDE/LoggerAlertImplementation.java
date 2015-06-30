@@ -10,6 +10,4 @@ public class LoggerAlertImplementation implements LoggerImplementation {
         alert.setContentText(text);
         alert.showAndWait();
     }
-
-   // public void close() {}
 }
