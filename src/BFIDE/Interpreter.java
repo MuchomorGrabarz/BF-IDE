@@ -6,14 +6,18 @@ import java.util.concurrent.ExecutionException;
 public class Interpreter {
     public final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
-    BFIDE.IO IO;
+    InputWrapper in;
+    OutputWrapper out;
+    LoggerWrapper logger;
 
-    public Interpreter(BFIDE.IO stream) {
-        IO = stream;
+    public Interpreter(InputWrapper in, OutputWrapper out, LoggerWrapper logger) {
+        this.in = in;
+        this.out = out;
+        this.logger = logger;
     }
 
     public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
-        String input = IO.getText();
+        String input = in.getText();
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
 
@@ -38,7 +42,7 @@ public class Interpreter {
                     break;
                 case ',':
                     if(inputPos >= inputTab.length) {
-                        IO.alert("Insufficient input given");
+                        logger.alert("Insufficient input given");
                         return;
                     }
                     tab[tapePos] = inputTab[inputPos++];
@@ -56,18 +60,18 @@ public class Interpreter {
             codePos++;
 
             if(tapePos < 0) {
-                IO.alert("Program moved to negative tape indexes");
+                logger.alert("Program moved to negative tape indexes");
                 return;
             }
             if(tapePos >= tapeSize) {
-                IO.alert("Program went over the (" + String.valueOf(tapeSize) + ") tape size limit");
+                logger.alert("Program went over the (" + String.valueOf(tapeSize) + ") tape size limit");
                 return;
             }
 
         }
 
-        IO.alert("Program ended execution");
+        logger.alert("Program ended execution");
 
-        IO.setText(output.toString());
+        out.setText(output.toString());
     }
 }

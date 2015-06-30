@@ -1,9 +1,6 @@
 package test;
 
-import BFIDE.BFNode;
-import BFIDE.FXIO;
-import BFIDE.IO;
-import BFIDE.Interpreter;
+import BFIDE.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,33 +10,37 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 public class InterpreterTest {
-    IO stream;
+    InputWrapper in;
+    OutputWrapper out;
+    LoggerWrapper logger;
     List<BFNode> mockedCode;
 
     @Before
     public void mockStreamAndList() {
-        stream = mock(FXIO.class);
+        in = mock(FXInput.class);
+        out = mock(FXOutput.class);
+        logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
     }
 
     @Test
     public void testSimpleProgram() throws Exception {
-        when(stream.getText()).thenReturn("a");
+        when(in.getText()).thenReturn("a");
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('.'));
 
         when(mockedCode.size()).thenReturn(new Integer(2));
 
-        Interpreter testedObj = new Interpreter(stream);
+        Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(stream).setText("a");
+        verify(out).setText("a");
     }
 
     @Test
     public void testSimpleProgram2() throws Exception {
-        when(stream.getText()).thenReturn("ab");
+        when(in.getText()).thenReturn("ab");
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('>'));
@@ -50,31 +51,31 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(6));
 
-        Interpreter testedObj = new Interpreter(stream);
+        Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(stream).setText("ba");
+        verify(out).setText("ba");
     }
 
     @Test
     public void testLeftBoundCheck() throws Exception {
-        when(stream.getText()).thenReturn("");
+        when(in.getText()).thenReturn("");
 
         when(mockedCode.get(0)).thenReturn(new BFNode('<'));
 
         when(mockedCode.size()).thenReturn(new Integer(1));
 
-        Interpreter testedObj = new Interpreter(stream);
+        Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(stream).alert("Program moved to negative tape indexes");
+        verify(logger).alert("Program moved to negative tape indexes");
     }
 
     @Test
     public void testRightBoundCheck() throws Exception {
-        when(stream.getText()).thenReturn("");
+        when(in.getText()).thenReturn("");
 
-        Interpreter testObj = new Interpreter(stream);
+        Interpreter testObj = new Interpreter(in, out, logger);
 
         when(mockedCode.size()).thenReturn(testObj.tapeSize);
 
@@ -82,14 +83,14 @@ public class InterpreterTest {
 
         testObj.run(mockedCode);
 
-        verify(stream).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
+        verify(logger).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
     }
 
     @Test
     public void testTapeSize() throws Exception {
-        when(stream.getText()).thenReturn("");
+        when(in.getText()).thenReturn("");
 
-        Interpreter testObj = new Interpreter(stream);
+        Interpreter testObj = new Interpreter(in, out, logger);
 
         when(mockedCode.size()).thenReturn(testObj.tapeSize - 1);
 
@@ -97,20 +98,20 @@ public class InterpreterTest {
 
         testObj.run(mockedCode);
 
-        verify(stream, never()).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
+        verify(logger, never()).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
     }
 
     @Test
     public void testInsufficientInput() throws Exception {
-        when(stream.getText()).thenReturn("");
+        when(in.getText()).thenReturn("");
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
 
         when(mockedCode.size()).thenReturn(new Integer(1));
 
-        Interpreter testedObj = new Interpreter(stream);
+        Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(stream).alert("Insufficient input given");
+        verify(logger).alert("Insufficient input given");
     }
 }

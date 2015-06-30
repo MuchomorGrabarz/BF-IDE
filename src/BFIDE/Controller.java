@@ -56,7 +56,7 @@ public class Controller {
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
         debugger = new Debugger(inputArea, outputArea);
-        interpreter = new Interpreter(new FXIO());
+        interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()));
 
         codeTapeCaretaker = new TapeCaretaker(codeTape,debugger);
         codeTapeCaretaker.setState(TapeCaretaker.State.CODE);
