@@ -5,6 +5,10 @@ public class MainLogger {
     static private MainLogger currentLogger;
     private LoggerImplementation impl;
 
+    static {
+        currentLogger = new MainLogger(new LoggerConsoleImplementation());
+    }
+
 
     static public MainLogger getLogger() {
         return currentLogger;
