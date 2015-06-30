@@ -1,7 +1,9 @@
 package BFIDE;
 
+import BFIDE.IOWrapper.InputWrapper;
+import BFIDE.IOWrapper.LoggerWrapper;
+import BFIDE.IOWrapper.OutputWrapper;
 import javafx.application.Platform;
-import javafx.scene.control.TextInputControl;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -10,8 +12,9 @@ import java.util.concurrent.FutureTask;
 public class Debugger {
     private final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
-    TextInputControl inputControl;
-    TextInputControl outputControl;
+    InputWrapper in;
+    OutputWrapper out;
+    LoggerWrapper logger;
 
     List<Listener> listeners;
 
@@ -21,9 +24,10 @@ public class Debugger {
 
     int dataTapePos, codeTapePos, inputPos;
 
-    public Debugger(TextInputControl inputControl, TextInputControl outputControl) {
-        this.inputControl = inputControl;
-        this.outputControl = outputControl;
+    public Debugger(InputWrapper in, OutputWrapper out, LoggerWrapper logger) {
+        this.in = in;
+        this.out = out;
+        this.logger = logger;
 
         listeners = new LinkedList<>();
     }
@@ -37,9 +41,9 @@ public class Debugger {
 
         this.nodes = nodes;
 
-        FutureTask<String> stringTask = new FutureTask<>(inputControl::getText);
+        FutureTask<String> stringTask = new FutureTask<>(in::getText);
         Platform.runLater(stringTask);
-        Platform.runLater(() -> outputControl.setText(""));
+        Platform.runLater(() -> out.setText(""));
 
         try {
             inputTab = stringTask.get().toCharArray();
@@ -56,7 +60,7 @@ public class Debugger {
     public void singleStep() {
         StringBuilder output = new StringBuilder();
 
-        FutureTask<String> stringTask = new FutureTask<>(outputControl::getText);
+        FutureTask<String> stringTask = new FutureTask<>(in::getText);
         Platform.runLater(stringTask);
         try {
             output.append(stringTask.get());
@@ -65,7 +69,17 @@ public class Debugger {
         }
 
         if(codeTapePos >= nodes.size()) {
-            Platform.runLater(() -> MainLogger.getLogger().log("The program has already ended it's execution"));
+            logger.alert(UIMessages.programEnded);
+            return;
+        }
+
+        if(dataTapePos < 0) {
+            logger.alert(UIMessages.illegaState);
+            return;
+        }
+
+        if(dataTapePos >= tapeSize) {
+            logger.alert(UIMessages.illegaState);
             return;
         }
 
@@ -83,6 +97,10 @@ public class Debugger {
                 tab[dataTapePos] = (char) (((int) tab[dataTapePos] + 255)%256);
                 break;
             case ',':
+                if(inputPos >= inputTab.length) {
+                    logger.alert(UIMessages.noInput);
+                    return;
+                }
                 tab[dataTapePos] = inputTab[inputPos++];
                 break;
             case '.':
@@ -97,17 +115,27 @@ public class Debugger {
         }
         codeTapePos++;
 
-        if(codeTapePos == nodes.size())
-            Platform.runLater(() -> MainLogger.getLogger().log("The program just ended execution"));
+        if(dataTapePos < 0) {
+            logger.alert(UIMessages.negIndexes);
+            return;
+        }
 
-        Platform.runLater(() -> outputControl.setText(String.valueOf(output)));
+        if(dataTapePos >= tapeSize) {
+            logger.alert(UIMessages.outOfTape);
+            return;
+        }
+
+        if(codeTapePos == nodes.size())
+            logger.alert(UIMessages.programEnded);
+
+        out.setText(String.valueOf(output));
 
         listeners.forEach(BFIDE.Listener::punch);
     }
     public void run() {
         StringBuilder output = new StringBuilder();
 
-        FutureTask<String> stringTask = new FutureTask<>(outputControl::getText);
+        FutureTask<String> stringTask = new FutureTask<>(in::getText);
         Platform.runLater(stringTask);
         try {
             output.append(stringTask.get());
@@ -130,6 +158,10 @@ public class Debugger {
                     tab[dataTapePos] = (char) (((int) tab[dataTapePos] + 255) % 256);
                     break;
                 case ',':
+                    if(inputPos >= inputTab.length) {
+                        logger.alert(UIMessages.noInput);
+                        return;
+                    }
                     tab[dataTapePos] = inputTab[inputPos++];
                     break;
                 case '.':
@@ -143,9 +175,22 @@ public class Debugger {
                     break;
             }
             codeTapePos++;
+
+            if(dataTapePos < 0) {
+                logger.alert(UIMessages.negIndexes);
+                return;
+            }
+
+            if(dataTapePos >= tapeSize) {
+                logger.alert(UIMessages.outOfTape);
+                return;
+            }
+
         }
 
-        Platform.runLater(() -> outputControl.setText(String.valueOf(output)));
+        logger.alert(UIMessages.programEnded);
+
+        out.setText(String .valueOf(output));
         listeners.forEach(BFIDE.Listener::punch);
     }
 

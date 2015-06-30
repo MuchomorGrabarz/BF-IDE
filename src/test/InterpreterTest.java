@@ -42,6 +42,7 @@ public class InterpreterTest {
         testedObj.run(mockedCode);
 
         verify(out).setText("a");
+        verify(logger).alert(UIMessages.programEnded);
     }
 
     @Test
@@ -61,6 +62,7 @@ public class InterpreterTest {
         testedObj.run(mockedCode);
 
         verify(out).setText("ba");
+        verify(logger).alert(UIMessages.programEnded);
     }
 
     @Test
@@ -74,7 +76,7 @@ public class InterpreterTest {
         Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(logger).alert("Program moved to negative tape indexes");
+        verify(logger).alert(UIMessages.negIndexes);
     }
 
     @Test
@@ -89,7 +91,7 @@ public class InterpreterTest {
 
         testObj.run(mockedCode);
 
-        verify(logger).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
+        verify(logger).alert(UIMessages.outOfTape);
     }
 
     @Test
@@ -104,7 +106,7 @@ public class InterpreterTest {
 
         testObj.run(mockedCode);
 
-        verify(logger, never()).alert("Program went over the (" + String.valueOf(testObj.tapeSize) + ") tape size limit");
+        verify(logger, never()).alert(UIMessages.outOfTape);
     }
 
     @Test
@@ -118,6 +120,6 @@ public class InterpreterTest {
         Interpreter testedObj = new Interpreter(in, out, logger);
         testedObj.run(mockedCode);
 
-        verify(logger).alert("Insufficient input given");
+        verify(logger).alert(UIMessages.noInput);
     }
 }

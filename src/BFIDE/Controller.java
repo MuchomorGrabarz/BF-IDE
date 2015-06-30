@@ -58,7 +58,7 @@ public class Controller {
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
-        debugger = new Debugger(inputArea, outputArea);
+        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()));
         interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()));
 
         codeTapeCaretaker = new TapeCaretaker(codeTape,debugger);

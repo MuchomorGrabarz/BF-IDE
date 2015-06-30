@@ -25,56 +25,57 @@ public class Interpreter {
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
 
-        int codePos = 0, inputPos = 0, tapePos = 0;
+        int codeTapePos = 0, inputPos = 0, dataTapePos = 0;
 
         char[] inputTab = input.toCharArray();
         StringBuilder output = new StringBuilder();
 
-        while(codePos < nodes.size()) {
-            switch (nodes.get(codePos).getType()) {
+        while(codeTapePos < nodes.size()) {
+            switch (nodes.get(codeTapePos).getType()) {
                 case '>':
-                    tapePos++;
+                    dataTapePos++;
                     break;
                 case '<':
-                    tapePos--;
+                    dataTapePos--;
                     break;
                 case '+':
-                    tab[tapePos] = (char) (((int) tab[tapePos] + 1)%256);
+                    tab[dataTapePos] = (char) (((int) tab[dataTapePos] + 1)%256);
                     break;
                 case '-':
-                    tab[tapePos] = (char) (((int) tab[tapePos] + 255)%256);
+                    tab[dataTapePos] = (char) (((int) tab[dataTapePos] + 255)%256);
                     break;
                 case ',':
                     if(inputPos >= inputTab.length) {
-                        logger.alert("Insufficient input given");
+                        logger.alert(UIMessages.noInput);
                         return;
                     }
-                    tab[tapePos] = inputTab[inputPos++];
+                    tab[dataTapePos] = inputTab[inputPos++];
                     break;
                 case '.':
-                    output.append(tab[tapePos]);
+                    output.append(tab[dataTapePos]);
                     break;
                 case '[':
-                    if(tab[tapePos] == 0) codePos = nodes.get(codePos).getJump();
+                    if(tab[dataTapePos] == 0) codeTapePos = nodes.get(codeTapePos).getJump();
                     break;
                 case ']':
-                    codePos = nodes.get(codePos).getJump()-1;
+                    codeTapePos = nodes.get(codeTapePos).getJump()-1;
                     break;
             }
-            codePos++;
+            codeTapePos++;
 
-            if(tapePos < 0) {
-                logger.alert("Program moved to negative tape indexes");
+            if(dataTapePos < 0) {
+                logger.alert(UIMessages.negIndexes);
                 return;
             }
-            if(tapePos >= tapeSize) {
-                logger.alert("Program went over the (" + String.valueOf(tapeSize) + ") tape size limit");
+
+            if(dataTapePos >= tapeSize) {
+                logger.alert(UIMessages.outOfTape);
                 return;
             }
 
         }
 
-        logger.alert("Program ended execution");
+        logger.alert(UIMessages.programEnded);
 
         out.setText(output.toString());
     }
