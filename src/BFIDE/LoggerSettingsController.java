@@ -19,6 +19,12 @@ public class LoggerSettingsController {
     Pane settingLoggerPane;
 
     public void initialize() {
+        if(lastState == State.ALERT) {
+            loggerImplMenu.setText("Alert");
+        } else {
+            loggerImplMenu.setText("Console");
+        }
+
         currentState = lastState;
     }
 
