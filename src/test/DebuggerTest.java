@@ -50,13 +50,16 @@ public class DebuggerTest {
 
         testedObj.prepare(mockedCode);
         verify(out, times(1)).setText(""); //not so behavioral test, doubtfully good
+        verify(out, times(1)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(2)).setText("");
+        verify(out, times(2)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(1)).setText("a");
         verify(out, times(3)).setText(anyString());
 
         verify(logger, times(1)).alert(UIMessages.programEnded);
+        verify(logger, times(1)).alert(anyString());
     }
 
     @Test
@@ -76,18 +79,25 @@ public class DebuggerTest {
 
         testedObj.prepare(mockedCode);
         verify(out, times(1)).setText(""); //not so behavioral test, doubtfully good
+        verify(out, times(1)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(2)).setText("");
+        verify(out, times(2)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(3)).setText("");
+        verify(out, times(3)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(4)).setText("");
+        verify(out, times(4)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(1)).setText("b");
+        verify(out, times(5)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(2)).setText("b");
+        verify(out, times(6)).setText(anyString());
         testedObj.singleStep();
         verify(out, times(1)).setText("ba");
+        verify(out, times(7)).setText(anyString());
 
         verify(logger, times(1)).alert(UIMessages.programEnded);
         verify(logger, times(1)).alert(anyString());
