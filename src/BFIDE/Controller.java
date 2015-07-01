@@ -195,4 +195,16 @@ public class Controller {
             e.printStackTrace();
         }
     }
+    public void showParserSettings() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Pane root = loader.load(getClass().getResource("parserSettings.fxml").openStream());
+            Stage loggerSettingsStage = new Stage();
+            loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.show();
+            ((ParserSettingController) loader.getController()).setLastAction(codePreparer::setParser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
