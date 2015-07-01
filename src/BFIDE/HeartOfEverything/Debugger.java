@@ -1,20 +1,21 @@
-package BFIDE;
+package BFIDE.HeartOfEverything;
 
+import BFIDE.BFNode;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
-import javafx.application.Platform;
+import BFIDE.Listener;
+import BFIDE.UIMessages;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
-public class Debugger {
+public class Debugger implements Executor {
     private final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
     InputWrapper in;
     OutputWrapper out;
     LoggerWrapper logger;
+    StringBuilder output;
 
     List<Listener> listeners;
 
@@ -34,6 +35,10 @@ public class Debugger {
 
     Set<Integer> breakpoints;
 
+    public Integer tapeSize() {
+        return tapeSize;
+    }
+
     public void prepare(List<BFNode> nodes) {
         dataTapePos = 0;
         codeTapePos = 0;
@@ -41,15 +46,11 @@ public class Debugger {
 
         this.nodes = nodes;
 
-        FutureTask<String> stringTask = new FutureTask<>(in::getText);
-        Platform.runLater(stringTask);
-        Platform.runLater(() -> out.setText(""));
+        output = new StringBuilder();
 
-        try {
-            inputTab = stringTask.get().toCharArray();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        out.setText(String.valueOf(output));
+
+        inputTab = in.getText().toCharArray();
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
         breakpoints = new HashSet<>();
@@ -58,15 +59,6 @@ public class Debugger {
     }
 
     public void singleStep() {
-        StringBuilder output = new StringBuilder();
-
-        FutureTask<String> stringTask = new FutureTask<>(in::getText);
-        Platform.runLater(stringTask);
-        try {
-            output.append(stringTask.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
 
         if(codeTapePos >= nodes.size()) {
             logger.alert(UIMessages.programEnded);
@@ -135,12 +127,9 @@ public class Debugger {
     public void run() {
         StringBuilder output = new StringBuilder();
 
-        FutureTask<String> stringTask = new FutureTask<>(in::getText);
-        Platform.runLater(stringTask);
-        try {
-            output.append(stringTask.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        if(codeTapePos == nodes.size()) {
+            logger.alert(UIMessages.alreadyEnded);
+            return;
         }
 
         while(codeTapePos < nodes.size() && !breakpoints.contains(codeTapePos)) {
@@ -190,7 +179,7 @@ public class Debugger {
 
         logger.alert(UIMessages.programEnded);
 
-        out.setText(String .valueOf(output));
+        out.setText(String.valueOf(output));
         listeners.forEach(BFIDE.Listener::punch);
     }
 

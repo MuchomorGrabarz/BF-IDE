@@ -1,5 +1,6 @@
 package BFIDE;
 
+import BFIDE.HeartOfEverything.Debugger;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

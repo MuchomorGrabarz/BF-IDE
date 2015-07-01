@@ -4,6 +4,8 @@ import BFIDE.*;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
+import BFIDE.HeartOfEverything.Executor;
+import BFIDE.HeartOfEverything.Interpreter;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
@@ -20,6 +22,7 @@ public class InterpreterTest {
     OutputWrapper out;
     LoggerWrapper logger;
     List<BFNode> mockedCode;
+    Executor testedObj;
 
     @Before
     public void mockStreamAndList() {
@@ -27,6 +30,7 @@ public class InterpreterTest {
         out = mock(FXOutput.class);
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
+        testedObj = new Interpreter(in, out, logger);
     }
 
     @Test
@@ -38,8 +42,8 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(2));
 
-        Interpreter testedObj = new Interpreter(in, out, logger);
-        testedObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(out).setText("a");
         verify(logger).alert(UIMessages.programEnded);
@@ -58,8 +62,8 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(6));
 
-        Interpreter testedObj = new Interpreter(in, out, logger);
-        testedObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(out).setText("ba");
         verify(logger).alert(UIMessages.programEnded);
@@ -73,8 +77,8 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(1));
 
-        Interpreter testedObj = new Interpreter(in, out, logger);
-        testedObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(logger).alert(UIMessages.negIndexes);
     }
@@ -83,13 +87,12 @@ public class InterpreterTest {
     public void testRightBoundCheck() throws Exception {
         when(in.getText()).thenReturn("");
 
-        Interpreter testObj = new Interpreter(in, out, logger);
-
-        when(mockedCode.size()).thenReturn(testObj.tapeSize);
+        when(mockedCode.size()).thenReturn(testedObj.tapeSize());
 
         when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
 
-        testObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(logger).alert(UIMessages.outOfTape);
     }
@@ -98,13 +101,12 @@ public class InterpreterTest {
     public void testTapeSize() throws Exception {
         when(in.getText()).thenReturn("");
 
-        Interpreter testObj = new Interpreter(in, out, logger);
-
-        when(mockedCode.size()).thenReturn(testObj.tapeSize - 1);
+        when(mockedCode.size()).thenReturn(testedObj.tapeSize() - 1);
 
         when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
 
-        testObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(logger, never()).alert(UIMessages.outOfTape);
     }
@@ -118,7 +120,8 @@ public class InterpreterTest {
         when(mockedCode.size()).thenReturn(new Integer(1));
 
         Interpreter testedObj = new Interpreter(in, out, logger);
-        testedObj.run(mockedCode);
+        testedObj.prepare(mockedCode);
+        testedObj.run();
 
         verify(logger).alert(UIMessages.noInput);
     }

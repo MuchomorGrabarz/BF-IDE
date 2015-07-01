@@ -3,6 +3,8 @@ package BFIDE;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
+import BFIDE.HeartOfEverything.Debugger;
+import BFIDE.HeartOfEverything.Interpreter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,7 +118,8 @@ public class Controller {
 
         Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
             try {
-                interpreter.run(codePreparer.run());
+                interpreter.prepare(codePreparer.run());
+                interpreter.run();
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -153,6 +156,7 @@ public class Controller {
         state = State.DEBUGGER;
         Platform.runLater(() -> modeMenu.setText("Debugger"));
         Platform.runLater(() -> runButton.setText("Prepare"));
+        run();
     }
     public void setInterpreterMode() {
         tapePane.setMaxHeight(0);

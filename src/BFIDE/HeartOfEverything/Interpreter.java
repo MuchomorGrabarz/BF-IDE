@@ -1,18 +1,25 @@
-package BFIDE;
+package BFIDE.HeartOfEverything;
 
+import BFIDE.BFNode;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
+import BFIDE.UIMessages;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class Interpreter {
-    public final Integer tapeSize = 30000;
+public class Interpreter implements Executor {
+    private final Integer tapeSize = 30000;
     private char[] tab = new char[tapeSize];
     InputWrapper in;
     OutputWrapper out;
     LoggerWrapper logger;
+
+    List<BFNode> nodes;
+
+    char[] inputTab;
+
+    int dataTapePos, codeTapePos, inputPos;
 
     public Interpreter(InputWrapper in, OutputWrapper out, LoggerWrapper logger) {
         this.in = in;
@@ -20,7 +27,25 @@ public class Interpreter {
         this.logger = logger;
     }
 
-    public void run(List<BFNode> nodes) throws ExecutionException, InterruptedException {
+    public Integer tapeSize() {
+        return tapeSize;
+    }
+
+    public void prepare(List<BFNode> nodes) {
+        dataTapePos = 0;
+        codeTapePos = 0;
+        inputPos = 0;
+
+        this.nodes = nodes;
+
+        out.setText("");
+
+        inputTab = in.getText().toCharArray();
+
+        for(int i = 0; i<tapeSize; i++) tab[i] = 0;
+    }
+
+    public void run() {
         String input = in.getText();
 
         for(int i = 0; i<tapeSize; i++) tab[i] = 0;
