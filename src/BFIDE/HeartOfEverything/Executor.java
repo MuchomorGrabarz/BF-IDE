@@ -80,10 +80,10 @@ public abstract class Executor {
 
     }
 
-    Integer tapeSize() {
+    public Integer tapeSize() {
         return tapeSize;
     }
-    void prepare(List<BFNode> code) {
+    public void prepare(List<BFNode> code) {
         input.reset();
         output.reset();
         codeTape.reset(code);
@@ -94,5 +94,5 @@ public abstract class Executor {
         }
         memoryTape.reset(initTab);
     }
-    abstract void run();
+    abstract public void run();
 }

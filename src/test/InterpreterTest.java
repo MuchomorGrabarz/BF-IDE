@@ -21,6 +21,10 @@ public class InterpreterTest {
     InputWrapper in;
     OutputWrapper out;
     LoggerWrapper logger;
+
+    Tape<BFNode> codeTape;
+    Tape<TypeBox> memoryTape;
+
     List<BFNode> mockedCode;
     Executor testedObj;
 
@@ -30,7 +34,11 @@ public class InterpreterTest {
         out = mock(FXOutput.class);
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
-        testedObj = new Interpreter(in, out, logger);
+
+        memoryTape = mock(Tape.class);
+        codeTape = mock(Tape.class);
+
+        testedObj = new Interpreter(in, out, logger, codeTape, memoryTape);
     }
 
     @Test
@@ -119,7 +127,7 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(1));
 
-        Interpreter testedObj = new Interpreter(in, out, logger);
+        Interpreter testedObj = new Interpreter(in, out, logger, codeTape, memoryTape);
         testedObj.prepare(mockedCode);
         testedObj.run();
 

@@ -4,6 +4,7 @@ import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
 import BFIDE.HeartOfEverything.Debugger;
+import BFIDE.Tape;
 import org.junit.Before;
 
 import java.util.ArrayList;
@@ -26,7 +27,11 @@ public class DebuggerInterpreterTest extends InterpreterTest {
         out = mock(FXOutput.class);
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
-        testedObj = new Debugger(in, out, logger);
+
+        codeTape = mock(Tape.class);
+        memoryTape = mock(Tape.class);
+
+        testedObj = new Debugger(in, out, logger,codeTape,memoryTape);
     }
 
 }
