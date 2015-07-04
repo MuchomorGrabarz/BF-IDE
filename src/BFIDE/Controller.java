@@ -8,7 +8,6 @@ import BFIDE.HeartOfEverything.Interpreter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -33,9 +32,9 @@ public class Controller {
     @FXML
     Pane tapePane;
     @FXML
-    HBox codeTape;
+    HBox codeTapeView;
     @FXML
-    HBox dataTape;
+    HBox memoryTapeView;
 
     @FXML
     MenuButton modeMenu;
@@ -51,6 +50,7 @@ public class Controller {
     TapeCaretaker codeTapeCaretaker, dataTapeCaretaker;
     private Stage consoleStage = null;
 
+
     private enum State {DEBUGGER, INTERPRETER}
 
     State state;
@@ -60,14 +60,16 @@ public class Controller {
 
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
-        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()));
-        interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()));
 
-        codeTapeCaretaker = new TapeCaretaker(codeTape,debugger);
-        codeTapeCaretaker.setState(TapeCaretaker.State.CODE);
+        Tape<BFNode> interpreterCodeTape = new Tape<>();
+        Tape<TypeBox> interpreterMemoryTape = new Tape<>();
+        interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), interpreterCodeTape, interpreterMemoryTape);
 
-        dataTapeCaretaker = new TapeCaretaker(dataTape,debugger);
-        dataTapeCaretaker.setState(TapeCaretaker.State.DATA);
+        Tape<BFNode> debuggerCodeTape = new Tape<>();
+        Tape<TypeBox> debuggerMemoryTape = new Tape<>();
+        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), debuggerCodeTape, debuggerMemoryTape);
+        codeTapeCaretaker = new TapeCaretaker(codeTapeView,debuggerCodeTape);
+        dataTapeCaretaker = new TapeCaretaker(memoryTapeView,debuggerMemoryTape);
     }
 
     public void openFileAction() throws IOException {
@@ -93,6 +95,8 @@ public class Controller {
             BufferedWriter output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(currentFile)));
             output.write(codeArea.getText());
             output.close();
+        } else {
+            saveFileAsAction();
         }
     }
     public void saveFileAsAction() throws IOException {
@@ -113,9 +117,6 @@ public class Controller {
     }
 
     public void run() {
-
-        MainLogger.getLogger().log("Runned something.");
-
         Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
             try {
                 interpreter.prepare(codePreparer.run());
@@ -126,8 +127,19 @@ public class Controller {
         }
         else {
             try {
-                debugger.prepare(codePreparer.run());
-            } catch (ExecutionException | InterruptedException e) {
+                FXMLLoader loader = new FXMLLoader();
+                Pane root = loader.load(getClass().getResource("breakpointSetter.fxml").openStream());
+                Stage loggerSettingsStage = new Stage();
+                loggerSettingsStage.setScene(new Scene(root));
+                loggerSettingsStage.show();
+                ((BreakpointSettingController) loader.getController()).setLastAction(() -> {
+                    try {
+                        debugger.prepare(codePreparer.run());
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }});
@@ -156,7 +168,6 @@ public class Controller {
         state = State.DEBUGGER;
         Platform.runLater(() -> modeMenu.setText("Debugger"));
         Platform.runLater(() -> runButton.setText("Prepare"));
-        run();
     }
     public void setInterpreterMode() {
         tapePane.setMaxHeight(0);
@@ -168,14 +179,16 @@ public class Controller {
     }
 
     public void convert() throws IOException {
-        Stage converterStage = new Stage();
-
-        Parent root = FXMLLoader.load(getClass().getResource("converter.fxml"));
-
-        ConverterController.me.init(converterStage,codeArea);
-
-        converterStage.setScene(new Scene(root));
-        converterStage.show();
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            Pane root = loader.load(getClass().getResource("converter.fxml").openStream());
+            Stage loggerSettingsStage = new Stage();
+            loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.show();
+            ((ConverterController) loader.getController()).init(loggerSettingsStage,inputArea);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void next() {

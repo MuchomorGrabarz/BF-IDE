@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 public class ConverterController {
 
-    static public ConverterController me;
-
     private enum State {NONE, C, ASSEMBLER}
 
     State state = State.NONE;
@@ -18,10 +16,6 @@ public class ConverterController {
     MenuButton languageMenu;
 
     Stage stage;
-
-    public ConverterController() {
-        me = this;
-    }
 
     public void init(Stage stage, TextArea textArea) {
         this.stage = stage;

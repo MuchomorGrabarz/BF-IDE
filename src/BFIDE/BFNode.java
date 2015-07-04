@@ -4,11 +4,19 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class BFNode {
+public class BFNode extends TypeBox {
     static final Character[] LEGAL_TYPES = {'>', '<', ',', '.', '+', '-', '[', ']'};
     public static final Set<Character> LegalTypes = new TreeSet<>(Arrays.asList(LEGAL_TYPES));
 
-    private final Character type;
+    private boolean breakpoint = false;
+
+    public void setBreakpoint(boolean breakpoint) {
+        this.breakpoint = breakpoint;
+    }
+    public boolean isBreakpoint() {
+        return breakpoint;
+    }
+
     private Integer jump;
 
     public void setJump(Integer jump) {
@@ -22,12 +30,8 @@ public class BFNode {
         return type;
     }
     public BFNode(char type) {
-        if(LegalTypes.contains(type)) {
-            this.type = type;
-            return;
-        }
+        super(type);
 
-        assert false : "This place shouldn't be reached";
-        this.type = 'a';
+        assert LegalTypes.contains(type) : "This place shouldn't be reached";
     }
 }
