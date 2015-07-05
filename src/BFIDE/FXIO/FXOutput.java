@@ -14,7 +14,7 @@ public class FXOutput implements OutputWrapper {
 
     @Override
     public void reset() {
-        currentOutput.delete(0,currentOutput.length()-1);
+        for(int i = 0; i<=currentOutput.length()-1; i++) currentOutput.deleteCharAt(0);
         outputArea.setText(currentOutput.toString());
     }
     @Override

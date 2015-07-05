@@ -9,7 +9,6 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape;
-import BFIDE.TypeBox;
 import BFIDE.UIMessages;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,8 +27,8 @@ public class DebuggerTest {
     OutputWrapper out;
     LoggerWrapper logger;
 
-    Tape<BFNode> codeTape;
-    Tape<TypeBox> memoryTape;
+    Tape codeTape;
+    Tape memoryTape;
 
     List<BFNode> mockedCode;
     Debugger testedObj;

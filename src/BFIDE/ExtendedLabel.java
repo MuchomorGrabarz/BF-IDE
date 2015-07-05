@@ -22,8 +22,8 @@ public class ExtendedLabel extends Label {
             this.marked = false;
             this.node.setBreakpoint(false);
         } else {
-            this.setStyle("-fx-background-color: lightred");
-            this.marked = false;
+            this.setStyle("-fx-background-color: red");
+            this.marked = true;
             this.node.setBreakpoint(true);
         }
     }

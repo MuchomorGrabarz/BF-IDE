@@ -1,5 +1,6 @@
 package BFIDE;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -10,13 +11,13 @@ import java.util.List;
 public class TapeCaretaker extends HBox implements Listener {
 
     HBox tapeView;
-    Tape<? extends TypeBox> tape;
+    Tape tape;
 
     public enum State {DATA, CODE}
 
     State state;
 
-    public TapeCaretaker(HBox tapeView, Tape<? extends TypeBox> tape) {
+    public TapeCaretaker(HBox tapeView, Tape tape) {
 
         this.tapeView = tapeView;
 
@@ -50,7 +51,8 @@ public class TapeCaretaker extends HBox implements Listener {
     public void punch() {
         List<? extends TypeBox> list = tape.getPiece(tape.getPosition(),50);
         for(int i = 0; i<50; i++) {
-            ((Label) tapeView.getChildren().get(i)).setText(String.valueOf(list.get(i).getType()));
+            final int finalI = i;
+            Platform.runLater(() -> ((Label) tapeView.getChildren().get(finalI)).setText(String.valueOf(list.get(finalI).getType())));
         }
     }
 }

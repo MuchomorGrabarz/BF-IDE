@@ -5,26 +5,26 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape;
-import BFIDE.TypeBox;
 import BFIDE.UIMessages;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Executor {
 
     // En Taro Tassadar!
 
-    protected Tape<BFNode> codeTape;
-    protected Tape<TypeBox> memoryTape;
+    protected Tape codeTape;
+    protected Tape memoryTape;
 
     protected InputWrapper input;
     protected OutputWrapper output;
     protected LoggerWrapper logger;
 
     private Integer tapeSize = 30000;
-    private List<TypeBox> initTab;
+    private List<BFNode> initTab;
 
-    public Executor(InputWrapper input, OutputWrapper output, LoggerWrapper logger, Tape<BFNode> codeTape, Tape<TypeBox> memoryTape) {
+    public Executor(InputWrapper input, OutputWrapper output, LoggerWrapper logger, Tape codeTape, Tape memoryTape) {
         this.codeTape = codeTape;
         this.memoryTape = memoryTape;
         this.input = input;
@@ -88,9 +88,9 @@ public abstract class Executor {
         output.reset();
         codeTape.reset(code);
 
-        initTab.clear();
+        initTab = new LinkedList<>();
         for(int i = 0; i<= tapeSize; i++) {
-            initTab.add(new TypeBox('0'));
+            initTab.add(new BFNode('0'));
         }
         memoryTape.reset(initTab);
     }

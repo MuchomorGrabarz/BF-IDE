@@ -22,8 +22,8 @@ public class InterpreterTest {
     OutputWrapper out;
     LoggerWrapper logger;
 
-    Tape<BFNode> codeTape;
-    Tape<TypeBox> memoryTape;
+    Tape codeTape;
+    Tape memoryTape;
 
     List<BFNode> mockedCode;
     Executor testedObj;

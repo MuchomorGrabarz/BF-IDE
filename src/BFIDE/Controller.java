@@ -18,6 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -61,15 +62,15 @@ public class Controller {
         codePreparer = new CodePreparer(codeArea);
         codePreparer.setParser(new SimpleParser());
 
-        Tape<BFNode> interpreterCodeTape = new Tape<>();
-        Tape<TypeBox> interpreterMemoryTape = new Tape<>();
+        Tape interpreterCodeTape = new Tape();
+        Tape interpreterMemoryTape = new Tape();
         interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), interpreterCodeTape, interpreterMemoryTape);
 
-        Tape<BFNode> debuggerCodeTape = new Tape<>();
-        Tape<TypeBox> debuggerMemoryTape = new Tape<>();
-        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), debuggerCodeTape, debuggerMemoryTape);
+        Tape debuggerCodeTape = new Tape();
+        Tape debuggerMemoryTape = new Tape();
         codeTapeCaretaker = new TapeCaretaker(codeTapeView,debuggerCodeTape);
         dataTapeCaretaker = new TapeCaretaker(memoryTapeView,debuggerMemoryTape);
+        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), debuggerCodeTape, debuggerMemoryTape);
     }
 
     public void openFileAction() throws IOException {
@@ -117,33 +118,39 @@ public class Controller {
     }
 
     public void run() {
-        Thread t = new Thread(() -> {if(state == State.INTERPRETER) {
-            try {
-                interpreter.prepare(codePreparer.run());
-                interpreter.run();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(state == State.INTERPRETER) {
+            Thread t = new Thread(() -> {
+                try {
+                    interpreter.prepare(codePreparer.run());
+                    interpreter.run();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            t.start();
         }
-        else {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                Pane root = loader.load(getClass().getResource("breakpointSetter.fxml").openStream());
-                Stage loggerSettingsStage = new Stage();
-                loggerSettingsStage.setScene(new Scene(root));
-                loggerSettingsStage.show();
-                ((BreakpointSettingController) loader.getController()).setLastAction(() -> {
-                    try {
-                        debugger.prepare(codePreparer.run());
-                    } catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        else try {
+            FXMLLoader loader = new FXMLLoader();
+            Pane root = loader.load(getClass().getResource("breakpointSetter.fxml").openStream());
+            Stage loggerSettingsStage = new Stage();
+            loggerSettingsStage.setScene(new Scene(root));
+            Thread t = new Thread(() -> {
+                List<BFNode> nodes = null;
+                try {
+                    nodes = codePreparer.run();
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ((BreakpointSettingController) loader.getController()).init(nodes, x -> {
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }});
-        t.start();
+                final List<BFNode> finalNodes = nodes;
+                ((BreakpointSettingController) loader.getController()).setLastAction(() -> debugger.prepare(finalNodes));
+                Platform.runLater(loggerSettingsStage::show);
+            });
+            t.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showConsole() {

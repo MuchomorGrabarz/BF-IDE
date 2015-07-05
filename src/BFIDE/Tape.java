@@ -1,20 +1,25 @@
 package BFIDE;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
-public class Tape<T> {
+public class Tape {
 
-    List<T> nodes;
-    List<Listener> listeners;
+    List<BFNode> nodes;
+    Set<Listener> listeners = new HashSet<>();
     private int pos;
 
     public int getLength() {
         return nodes.size();
     }
 
-    public void reset(List<T> initList) {
+    public void reset(List<BFNode> initList) {
         pos = 0;
         nodes = initList;
+
+        listeners.forEach(BFIDE.Listener::punch);
     }
 
     public int getPosition() {
@@ -32,15 +37,37 @@ public class Tape<T> {
         listeners.remove(listener);
     }
 
-    public T getValue() {
+    public BFNode getValue() {
         return nodes.get(pos);
     }
-    public void setValue(T val) {
+    public void setValue(BFNode val) {
         nodes.set(pos,val);
         listeners.forEach(BFIDE.Listener::punch);
     }
 
-    public List<T> getPiece(int position, int i) {
-        return nodes.subList(position,i);
+    public List<BFNode> getPiece(int position, int i) {
+
+        int begin, end;
+
+        begin = Integer.max(position, 0);
+        end = Integer.min(nodes.size(), position+i);
+
+        List<BFNode> prefix = new LinkedList<>();
+        List<BFNode> sufix = new LinkedList<>();
+
+        for(int j = position; j<begin; j++) {
+            prefix.add(new BFNode('0'));
+        }
+        for(int j = end; j<position+i; j++) {
+            sufix.add(new BFNode('0'));
+        }
+
+        List<BFNode> result = new LinkedList<>();
+
+        result.addAll(prefix);
+        result.addAll(nodes.subList(begin,end));
+        result.addAll(sufix);
+
+        return result;
     }
 }
