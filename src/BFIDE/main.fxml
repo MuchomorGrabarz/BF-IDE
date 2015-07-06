@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -29,10 +30,12 @@
     <BorderPane prefHeight="286.0" prefWidth="138.0">
       <bottom>
         <VBox prefHeight="188.0" prefWidth="138.0">
-          <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
-          <TextArea id="in" fx:id="inputArea" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
-          <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Output" />
-          <TextArea fx:id="outputArea" editable="false" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
+           <children>
+             <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Input" />
+             <TextArea id="in" fx:id="inputArea" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
+             <Label prefHeight="24.0" prefWidth="55.999900000002526" text="Output" />
+             <TextArea fx:id="outputArea" editable="false" prefHeight="64.0" prefWidth="128.0" wrapText="true" />
+           </children>
           <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
           </padding>
@@ -40,39 +43,52 @@
       </bottom>
       <top>
         <Pane prefHeight="115.0" prefWidth="126.0">
-          <Button fx:id="runButton" layoutX="9.0" layoutY="53.0" mnemonicParsing="false" onAction="#run" prefWidth="115.0" text="Run" />
-          <MenuButton fx:id="modeMenu" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefWidth="115.0" text="Interpreter">
-            <items>
-              <MenuItem mnemonicParsing="false" onAction="#setInterpreterMode" text="Interpreter" />
-              <MenuItem mnemonicParsing="false" onAction="#setDebuggerMode" text="Debugger" />
-            </items>
-          </MenuButton>
+           <children>
+             <Button fx:id="runButton" layoutX="9.0" layoutY="53.0" mnemonicParsing="false" onAction="#run" prefWidth="115.0" text="Run" />
+             <MenuButton fx:id="modeMenu" layoutX="9.0" layoutY="14.0" mnemonicParsing="false" prefWidth="115.0" text="Interpreter">
+               <items>
+                 <MenuItem mnemonicParsing="false" onAction="#setInterpreterMode" text="Interpreter" />
+                 <MenuItem mnemonicParsing="false" onAction="#setDebuggerMode" text="Debugger" />
+               </items>
+             </MenuButton>
+           </children>
         </Pane>
       </top>
     </BorderPane>
   </right>
   <top>
     <MenuBar useSystemMenuBar="true">
-      <Menu mnemonicParsing="false" text="File">
-        <MenuItem mnemonicParsing="false" onAction="#openFileAction" text="Open" />
-        <MenuItem mnemonicParsing="false" onAction="#saveFileAction" text="Save" />
-        <MenuItem mnemonicParsing="false" onAction="#saveFileAsAction" text="Save As ..." />
-        <MenuItem mnemonicParsing="false" onAction="#closeAction" text="Close" />
-      </Menu>
-      <Menu mnemonicParsing="false" text="Settings">
-        <MenuItem mnemonicParsing="false" text="Tape" />
-        <MenuItem mnemonicParsing="false" onAction="#showLoggerSettings" text="Logs" />
-        <MenuItem mnemonicParsing="false" onAction="#showParserSettings" text="Parser" />
-      </Menu>
-        <Menu mnemonicParsing="false" text="Logging">
-          <MenuItem mnemonicParsing="false" onAction="#showConsole" text="Show console" />
-        </Menu>
-      <Menu mnemonicParsing="false" text="Code">
-        <MenuItem mnemonicParsing="false" onAction="#convert" text="Convert" />
-      </Menu>
-      <Menu mnemonicParsing="false" text="Help ">
-        <MenuItem mnemonicParsing="false" text="Brainf**k basics" />
-      </Menu>
+       <menus>
+         <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#openFileAction" text="Open" />
+              <MenuItem mnemonicParsing="false" onAction="#saveFileAction" text="Save" />
+              <MenuItem mnemonicParsing="false" onAction="#saveFileAsAction" text="Save As ..." />
+              <MenuItem mnemonicParsing="false" onAction="#closeAction" text="Close" />
+            </items>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Settings">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#showLoggerSettings" text="Logs" />
+              <MenuItem mnemonicParsing="false" onAction="#showParserSettings" text="Parser" />
+            </items>
+         </Menu>
+           <Menu mnemonicParsing="false" text="Logging">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#showConsole" text="Show console" />
+              </items>
+           </Menu>
+         <Menu mnemonicParsing="false" text="Code">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#convert" text="Convert" />
+            </items>
+         </Menu>
+         <Menu mnemonicParsing="false" text="Help ">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Brainf**k basics" />
+            </items>
+         </Menu>
+       </menus>
     </MenuBar>
   </top>
 </BorderPane>

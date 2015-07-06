@@ -9,7 +9,7 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape.Tape;
-import BFIDE.UIMessages;
+import BFIDE.Logging.UIMessages;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class DebuggerTest {
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('.'));
 
-        when(mockedCode.size()).thenReturn(new Integer(2));
+        when(mockedCode.size()).thenReturn(2);
 
         //BAD TEST
 
@@ -67,8 +67,8 @@ public class DebuggerTest {
         verify(out, times(1)).setText("a");
         verify(out, times(3)).setText(anyString());
 
-        verify(logger, times(1)).alert(UIMessages.programEnded);
-        verify(logger, times(1)).alert(anyString());
+        verify(logger, times(1)).infoAlert(UIMessages.programEnded);
+        verify(logger, times(1)).infoAlert(anyString());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class DebuggerTest {
         when(mockedCode.get(4)).thenReturn(new BFNode('<'));
         when(mockedCode.get(5)).thenReturn(new BFNode('.'));
 
-        when(mockedCode.size()).thenReturn(new Integer(6));
+        when(mockedCode.size()).thenReturn(6);
 
         //BAD TEST
 
@@ -108,7 +108,7 @@ public class DebuggerTest {
         verify(out, times(1)).setText("ba");
         verify(out, times(7)).setText(anyString());
 
-        verify(logger, times(1)).alert(UIMessages.programEnded);
-        verify(logger, times(1)).alert(anyString());
+        verify(logger, times(1)).infoAlert(UIMessages.programEnded);
+        verify(logger, times(1)).infoAlert(anyString());
     }
 }

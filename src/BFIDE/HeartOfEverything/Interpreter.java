@@ -5,7 +5,7 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape.Tape;
-import BFIDE.UIMessages;
+import BFIDE.Logging.UIMessages;
 
 import java.util.List;
 
@@ -24,6 +24,6 @@ public class Interpreter extends Executor {
             step();
         }
 
-        logger.alert(UIMessages.programEnded);
+        logger.infoAlert(UIMessages.programEnded);
     }
 }

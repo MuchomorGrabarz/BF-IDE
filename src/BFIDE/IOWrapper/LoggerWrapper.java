@@ -1,5 +1,6 @@
 package BFIDE.IOWrapper;
 
 public interface LoggerWrapper {
-    void alert(String text);
+    void warningAlert(String text);
+    void infoAlert(String text);
 }

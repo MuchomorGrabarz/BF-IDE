@@ -11,7 +11,6 @@ public class LoggerAlertImplementation implements LoggerImplementation {
             alert.setHeaderText(null);
             alert.setContentText(text);
             alert.showAndWait();
-
         });
     }
 }

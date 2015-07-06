@@ -1,6 +1,6 @@
 package test;
 
-import BFIDE.*;
+import BFIDE.Logging.UIMessages;
 import BFIDE.Tape.BFNode;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
@@ -56,7 +56,7 @@ public class InterpreterTest {
         testedObj.run();
 
         verify(out).setText("a");
-        verify(logger).alert(UIMessages.programEnded);
+        verify(logger).infoAlert(UIMessages.programEnded);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class InterpreterTest {
         testedObj.run();
 
         verify(out).setText("ba");
-        verify(logger).alert(UIMessages.programEnded);
+        verify(logger).infoAlert(UIMessages.programEnded);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class InterpreterTest {
         testedObj.prepare(mockedCode);
         testedObj.run();
 
-        verify(logger).alert(UIMessages.negIndexes);
+        verify(logger).warningAlert(UIMessages.negIndexes);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class InterpreterTest {
         testedObj.prepare(mockedCode);
         testedObj.run();
 
-        verify(logger).alert(UIMessages.outOfTape);
+        verify(logger).warningAlert(UIMessages.outOfTape);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class InterpreterTest {
         testedObj.prepare(mockedCode);
         testedObj.run();
 
-        verify(logger, never()).alert(UIMessages.outOfTape);
+        verify(logger, never()).warningAlert(UIMessages.outOfTape);
     }
 
     @Test
@@ -133,6 +133,6 @@ public class InterpreterTest {
         testedObj.prepare(mockedCode);
         testedObj.run();
 
-        verify(logger).alert(UIMessages.noInput);
+        verify(logger).warningAlert(UIMessages.noInput);
     }
 }

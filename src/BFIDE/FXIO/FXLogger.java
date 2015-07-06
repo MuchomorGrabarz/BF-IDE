@@ -1,10 +1,13 @@
 package BFIDE.FXIO;
 
 import BFIDE.IOWrapper.LoggerWrapper;
-import BFIDE.Logging.MainLogger;
+import BFIDE.Logging.Logger;
 
 public class FXLogger implements LoggerWrapper {
-    public void alert(String text) {
-        MainLogger.getLogger().log(text);
+    public void warningAlert(String text) {
+        Logger.getLogger().logWarning(text);
+    }
+    public void infoAlert(String text) {
+        Logger.getLogger().logInfo(text);
     }
 }

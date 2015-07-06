@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="settingLoggerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="107.0" prefWidth="263.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.Logging.LoggerSettingsController">
+<Pane fx:id="settingLoggerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="263.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.Logging.LoggerSettingsController">
    <children>
-      <MenuButton fx:id="loggerImplMenu" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="loggerImplMenu" layoutX="13.0" layoutY="43.0" mnemonicParsing="false" text="MenuButton">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#setAlerts" text="Alerts" />
             <MenuItem mnemonicParsing="false" onAction="#setConsole" text="Console" />
         </items>
       </MenuButton>
-      <Button layoutX="31.0" layoutY="68.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="82.0" text="Cancel" />
-      <Button layoutX="139.0" layoutY="68.0" mnemonicParsing="false" onAction="#ok" prefHeight="25.0" prefWidth="91.0" text="Ok" />
+      <Button layoutX="30.0" layoutY="153.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="82.0" text="Cancel" />
+      <Button layoutX="138.0" layoutY="153.0" mnemonicParsing="false" onAction="#ok" prefHeight="25.0" prefWidth="91.0" text="Ok" />
+      <MenuButton fx:id="loggerAbstMenu" layoutX="13.0" layoutY="107.0" mnemonicParsing="false" text="MenuButton">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#setNoAdditional" text="No additional text" />
+            <MenuItem mnemonicParsing="false" onAction="#setSimpleAdditional" text="Simple additional text" />
+         </items>
+      </MenuButton>
+      <Label layoutX="30.0" layoutY="14.0" text="Base:" />
+      <Label layoutX="30.0" layoutY="81.0" text="Style:" />
    </children>
 </Pane>

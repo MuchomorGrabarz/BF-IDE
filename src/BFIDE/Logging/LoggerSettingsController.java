@@ -7,47 +7,80 @@ import javafx.stage.Stage;
 
 public class LoggerSettingsController {
 
-    private enum State {ALERT,CONSOLE}
+    private enum ImplState {ALERT,CONSOLE}
+    private enum AbstState {NOADD, ADD}
 
-    private static State lastState = State.CONSOLE;
-    private State currentState;
+    private static ImplState lastImplState = ImplState.CONSOLE;
+    private static AbstState lastAbstState = AbstState.ADD;
+    private ImplState currentImplState;
+    private AbstState currentAbstState;
 
     @FXML
     MenuButton loggerImplMenu;
-
+    @FXML
+    MenuButton loggerAbstMenu;
     @FXML
     Pane settingLoggerPane;
 
+
     public void initialize() {
-        if(lastState == State.ALERT) {
+        if(lastImplState == ImplState.ALERT) {
             loggerImplMenu.setText("Alert");
         } else {
             loggerImplMenu.setText("Console");
         }
 
-        currentState = lastState;
+        currentImplState = lastImplState;
+
+        if(lastAbstState == AbstState.ADD) {
+            loggerAbstMenu.setText("Simple additional text");
+        } else {
+            loggerAbstMenu.setText("No additional text");
+        }
+
+        currentAbstState = lastAbstState;
     }
 
     public void setAlerts() {
-        currentState = State.ALERT;
+        currentImplState = ImplState.ALERT;
         loggerImplMenu.setText("Alerts");
     }
     public void setConsole() {
-        currentState = State.CONSOLE;
+        currentImplState = ImplState.CONSOLE;
         loggerImplMenu.setText("Console");
+    }
+
+    public void setNoAdditional() {
+        currentAbstState = AbstState.NOADD;
+        loggerAbstMenu.setText("No additional text");
+    }
+    public void setSimpleAdditional() {
+        currentAbstState = AbstState.ADD;
+        loggerAbstMenu.setText("Simple additional text");
     }
 
     public void cancel() {
         ((Stage) settingLoggerPane.getScene().getWindow()).close();
     }
     public void ok() {
-        if(currentState == State.CONSOLE) {
-            MainLogger.setLogger(new MainLogger(new LoggerConsoleImplementation()));
+
+        LoggerImplementation impl;
+
+        if(currentImplState == ImplState.CONSOLE) {
+            impl = new LoggerConsoleImplementation();
         } else {
-            MainLogger.setLogger(new MainLogger(new LoggerAlertImplementation()));
+            impl = new LoggerAlertImplementation();
         }
 
-        lastState = currentState;
+        if(currentAbstState == AbstState.ADD) {
+            Logger.setLogger(new SimpleAdditionsLogger(impl));
+        } else {
+            Logger.setLogger(new NoAdditionsLogger(impl));
+        }
+
+        lastImplState = currentImplState;
+        lastAbstState = currentAbstState;
+
         ((Stage) settingLoggerPane.getScene().getWindow()).close();
     }
 }
