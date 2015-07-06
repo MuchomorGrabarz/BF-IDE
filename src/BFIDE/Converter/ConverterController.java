@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Converter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
@@ -6,8 +6,6 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class ConverterController {
-
-    static public ConverterController me;
 
     private enum State {NONE, C, ASSEMBLER}
 
@@ -18,10 +16,6 @@ public class ConverterController {
     MenuButton languageMenu;
 
     Stage stage;
-
-    public ConverterController() {
-        me = this;
-    }
 
     public void init(Stage stage, TextArea textArea) {
         this.stage = stage;

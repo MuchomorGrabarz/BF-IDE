@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 
-<Pane fx:id="settingParserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="177.0" prefWidth="253.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.ParserSettingController">
+<Pane fx:id="settingParserPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="177.0" prefWidth="253.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BFIDE.Parser.ParserSettingController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="226.0" text="Set types of comments which will be ignored:" />
       <CheckBox fx:id="cLike" layoutX="49.0" layoutY="65.0" mnemonicParsing="false" text="C-like short comments" />

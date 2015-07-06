@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Converter;
 
 import java.util.LinkedList;
 

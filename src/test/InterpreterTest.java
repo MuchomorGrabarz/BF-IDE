@@ -1,6 +1,7 @@
 package test;
 
 import BFIDE.*;
+import BFIDE.Tape.BFNode;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
@@ -9,6 +10,7 @@ import BFIDE.HeartOfEverything.Interpreter;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
+import BFIDE.Tape.Tape;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +23,10 @@ public class InterpreterTest {
     InputWrapper in;
     OutputWrapper out;
     LoggerWrapper logger;
+
+    Tape codeTape;
+    Tape memoryTape;
+
     List<BFNode> mockedCode;
     Executor testedObj;
 
@@ -30,7 +36,11 @@ public class InterpreterTest {
         out = mock(FXOutput.class);
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
-        testedObj = new Interpreter(in, out, logger);
+
+        memoryTape = mock(Tape.class);
+        codeTape = mock(Tape.class);
+
+        testedObj = new Interpreter(in, out, logger, codeTape, memoryTape);
     }
 
     @Test
@@ -119,7 +129,7 @@ public class InterpreterTest {
 
         when(mockedCode.size()).thenReturn(new Integer(1));
 
-        Interpreter testedObj = new Interpreter(in, out, logger);
+        Interpreter testedObj = new Interpreter(in, out, logger, codeTape, memoryTape);
         testedObj.prepare(mockedCode);
         testedObj.run();
 

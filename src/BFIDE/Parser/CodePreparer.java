@@ -1,5 +1,6 @@
-package BFIDE;
+package BFIDE.Parser;
 
+import BFIDE.Tape.BFNode;
 import javafx.application.Platform;
 import javafx.scene.control.TextInputControl;
 

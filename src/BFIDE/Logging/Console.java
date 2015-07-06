@@ -1,4 +1,6 @@
-package BFIDE;
+package BFIDE.Logging;
+
+import BFIDE.Listener;
 
 import java.util.*;
 

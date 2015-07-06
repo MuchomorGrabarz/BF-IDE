@@ -1,7 +1,7 @@
 package test;
 
-import BFIDE.BFNode;
-import BFIDE.SimpleParser;
+import BFIDE.Tape.BFNode;
+import BFIDE.Parser.SimpleParser;
 import org.junit.Test;
 
 import java.util.ArrayList;

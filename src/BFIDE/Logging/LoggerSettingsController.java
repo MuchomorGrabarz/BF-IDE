@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Logging;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;

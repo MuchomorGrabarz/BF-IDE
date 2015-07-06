@@ -1,12 +1,10 @@
-package BFIDE;
+package BFIDE.Logging;
 
+import BFIDE.Listener;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 
-/**
- * Created by grabarz_muchomor on 29.06.15.
- */
 public class LogConsoleController implements Listener {
     @FXML
     public TextArea logText;
@@ -15,7 +13,7 @@ public class LogConsoleController implements Listener {
     public Pane root;
 
     public void initialize() {
-        logText.setText(String.join("\n",Console.getConsole().getLogs()));
+        logText.setText(String.join("\n", Console.getConsole().getLogs()));
         Console.getConsole().registerListener(this);
     }
 

@@ -1,6 +1,6 @@
 package test;
 
-import BFIDE.BFNode;
+import BFIDE.Tape.BFNode;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
@@ -8,6 +8,7 @@ import BFIDE.HeartOfEverything.Debugger;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
+import BFIDE.Tape.Tape;
 import BFIDE.UIMessages;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,10 @@ public class DebuggerTest {
     InputWrapper in;
     OutputWrapper out;
     LoggerWrapper logger;
+
+    Tape codeTape;
+    Tape memoryTape;
+
     List<BFNode> mockedCode;
     Debugger testedObj;
 
@@ -34,7 +39,11 @@ public class DebuggerTest {
         out = mock(FXOutput.class);
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
-        testedObj = new Debugger(in, out, logger);
+
+        codeTape = mock(Tape.class);
+        memoryTape = mock(Tape.class);
+
+        testedObj = new Debugger(in, out, logger, codeTape, memoryTape);
     }
 
     @Test

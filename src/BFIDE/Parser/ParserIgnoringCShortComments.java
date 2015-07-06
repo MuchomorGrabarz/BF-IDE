@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Parser;
 
 public class ParserIgnoringCShortComments extends ParserIgnoringComments {
 

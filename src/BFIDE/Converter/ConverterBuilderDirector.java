@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Converter;
 
 public class ConverterBuilderDirector {
     ConverterBuilder builder;

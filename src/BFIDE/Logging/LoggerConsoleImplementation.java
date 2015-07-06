@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Logging;
 
 public class LoggerConsoleImplementation implements LoggerImplementation {
 

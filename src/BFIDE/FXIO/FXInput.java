@@ -10,9 +10,33 @@ import java.util.concurrent.FutureTask;
 
 public class FXInput implements InputWrapper {
     TextArea inputArea;
+    String characters;
+    int pos;
 
     public FXInput(TextArea inputArea) {
         this.inputArea = inputArea;
+
+        characters = inputArea.getText();
+        pos=0;
+    }
+
+    @Override
+    public void reset() {
+        characters = inputArea.getText();
+        pos = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+        if(pos >= characters.length()) return false;
+        return true;
+    }
+
+    @Override
+    public char getChar() {
+        char result = characters.charAt(pos);
+        pos++;
+        return result;
     }
 
     public String getText() {

@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Parser;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -18,7 +18,7 @@ public class ParserSettingController {
 
     private Consumer<Parser> lastAction = null;
 
-    void setLastAction(Consumer<Parser> lastAction) {
+    public void setLastAction(Consumer<Parser> lastAction) {
         this.lastAction = lastAction;
     }
 
