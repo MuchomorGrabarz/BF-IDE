@@ -1,4 +1,4 @@
-package BFIDE;
+package BFIDE.Logging;
 
 public class UIMessages {
     public static final String noInput = "Insufficient input given";

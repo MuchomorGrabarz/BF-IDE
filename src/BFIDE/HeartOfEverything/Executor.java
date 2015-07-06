@@ -5,7 +5,7 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape.Tape;
-import BFIDE.UIMessages;
+import BFIDE.Logging.UIMessages;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,7 +48,7 @@ public abstract class Executor {
                 break;
             case ',':
                 if(!input.hasNext()) {
-                    logger.alert(UIMessages.noInput);
+                    logger.warningAlert(UIMessages.noInput);
                     return;
                 }
                 memoryTape.getValue().setType(input.getChar());
@@ -66,12 +66,12 @@ public abstract class Executor {
         codeTape.setPosition(codeTape.getPosition() + 1);
 
         if(memoryTape.getPosition() < 0) {
-            logger.alert(UIMessages.negIndexes);
+            logger.warningAlert(UIMessages.negIndexes);
             return;
         }
 
         if(memoryTape.getPosition() >= tapeSize) {
-            logger.alert(UIMessages.outOfTape);
+            logger.warningAlert(UIMessages.outOfTape);
             return;
         }
 

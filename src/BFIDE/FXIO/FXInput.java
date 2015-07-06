@@ -1,7 +1,7 @@
 package BFIDE.FXIO;
 
 import BFIDE.IOWrapper.InputWrapper;
-import BFIDE.UIMessages;
+import BFIDE.Logging.UIMessages;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 

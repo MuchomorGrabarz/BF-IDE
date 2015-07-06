@@ -5,7 +5,7 @@ import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
 import BFIDE.Tape.Tape;
-import BFIDE.UIMessages;
+import BFIDE.Logging.UIMessages;
 
 import java.util.List;
 
@@ -22,30 +22,30 @@ public class Debugger extends Executor {
     public void singleStep() {
 
         if(codeTape.getPosition() >= codeTape.getLength()) {
-            logger.alert(UIMessages.programEnded);
+            logger.warningAlert(UIMessages.programEnded);
             return;
         }
         if(memoryTape.getPosition() < 0) {
-            logger.alert(UIMessages.illegaState);
+            logger.warningAlert(UIMessages.illegaState);
             return;
         }
         if(memoryTape.getPosition() >= memoryTape.getLength()) {
-            logger.alert(UIMessages.illegaState);
+            logger.warningAlert(UIMessages.illegaState);
             return;
         }
 
         step();
         if(codeTape.getPosition() == codeTape.getLength())
-            logger.alert(UIMessages.programEnded);
+            logger.infoAlert(UIMessages.programEnded);
     }
     public void run() {
 
         if(codeTape.getPosition() >= codeTape.getLength()) {
-            logger.alert(UIMessages.alreadyEnded);
+            logger.warningAlert(UIMessages.alreadyEnded);
             return;
         }
         do step(); while(codeTape.getPosition() < codeTape.getLength() && !codeTape.getValue().isBreakpoint());
 
-        logger.alert(UIMessages.programEnded);
+        logger.infoAlert(UIMessages.programEnded);
     }
 }
