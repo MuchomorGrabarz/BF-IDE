@@ -1,10 +1,10 @@
 package BFIDE.HeartOfEverything;
 
-import BFIDE.BFNode;
+import BFIDE.Tape.BFNode;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
-import BFIDE.Tape;
+import BFIDE.Tape.Tape;
 import BFIDE.UIMessages;
 
 import java.util.LinkedList;
@@ -31,9 +31,6 @@ public abstract class Executor {
         this.output = output;
         this.logger = logger;
     }
-
-    public Tape getCodeTape() {return codeTape;}
-    public Tape getMemoryTape() {return memoryTape;}
 
     protected void step() {
         switch (codeTape.getValue().getType()) {

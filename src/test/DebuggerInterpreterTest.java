@@ -4,7 +4,7 @@ import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
 import BFIDE.HeartOfEverything.Debugger;
-import BFIDE.Tape;
+import BFIDE.Tape.Tape;
 import org.junit.Before;
 
 import java.util.ArrayList;

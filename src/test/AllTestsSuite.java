@@ -1,6 +1,6 @@
 package test;
 
-import BFIDE.Tape;
+import BFIDE.Tape.Tape;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

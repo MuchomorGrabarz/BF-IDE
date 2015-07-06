@@ -1,10 +1,18 @@
 package BFIDE;
 
+import BFIDE.Breakpoints.BreakpointSettingController;
+import BFIDE.Converter.ConverterController;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
 import BFIDE.HeartOfEverything.Debugger;
 import BFIDE.HeartOfEverything.Interpreter;
+import BFIDE.Parser.CodePreparer;
+import BFIDE.Parser.ParserSettingController;
+import BFIDE.Parser.SimpleParser;
+import BFIDE.Tape.BFNode;
+import BFIDE.Tape.Tape;
+import BFIDE.Tape.TapeCaretaker;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,13 +72,13 @@ public class Controller {
 
         Tape interpreterCodeTape = new Tape();
         Tape interpreterMemoryTape = new Tape();
-        interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), interpreterCodeTape, interpreterMemoryTape);
+        interpreter = new Interpreter(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(), interpreterCodeTape, interpreterMemoryTape);
 
         Tape debuggerCodeTape = new Tape();
         Tape debuggerMemoryTape = new Tape();
         codeTapeCaretaker = new TapeCaretaker(codeTapeView,debuggerCodeTape);
         dataTapeCaretaker = new TapeCaretaker(memoryTapeView,debuggerMemoryTape);
-        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(MainLogger.getLogger()), debuggerCodeTape, debuggerMemoryTape);
+        debugger = new Debugger(new FXInput(inputArea), new FXOutput(outputArea), new FXLogger(), debuggerCodeTape, debuggerMemoryTape);
     }
 
     public void openFileAction() throws IOException {
@@ -131,9 +139,10 @@ public class Controller {
         }
         else try {
             FXMLLoader loader = new FXMLLoader();
-            Pane root = loader.load(getClass().getResource("breakpointSetter.fxml").openStream());
+            Pane root = loader.load(getClass().getResource("Breakpoints/breakpointSetter.fxml").openStream());
             Stage loggerSettingsStage = new Stage();
             loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.setTitle("Mark breakpoints");
             Thread t = new Thread(() -> {
                 List<BFNode> nodes = null;
                 try {
@@ -156,7 +165,7 @@ public class Controller {
     public void showConsole() {
         if(consoleStage == null) {
             try {
-                Pane root = FXMLLoader.load(getClass().getResource("logConsole.fxml"));
+                Pane root = FXMLLoader.load(getClass().getResource("Logging/logConsole.fxml"));
                 Stage consoleStage = new Stage();
                 consoleStage.setScene(new Scene(root, 600, 400));
                 consoleStage.show();
@@ -188,11 +197,11 @@ public class Controller {
     public void convert() throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader();
-            Pane root = loader.load(getClass().getResource("converter.fxml").openStream());
+            Pane root = loader.load(getClass().getResource("Converter/converter.fxml").openStream());
             Stage loggerSettingsStage = new Stage();
             loggerSettingsStage.setScene(new Scene(root));
             loggerSettingsStage.show();
-            ((ConverterController) loader.getController()).init(loggerSettingsStage,inputArea);
+            ((ConverterController) loader.getController()).init(loggerSettingsStage,codeArea);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -207,9 +216,10 @@ public class Controller {
 
     public void showLoggerSettings() {
         try {
-            Pane root = FXMLLoader.load(getClass().getResource("loggerSettings.fxml"));
+            Pane root = FXMLLoader.load(getClass().getResource("Logging/loggerSettings.fxml"));
             Stage loggerSettingsStage = new Stage();
             loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.setTitle("Logger settings");
             loggerSettingsStage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -218,9 +228,10 @@ public class Controller {
     public void showParserSettings() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            Pane root = loader.load(getClass().getResource("parserSettings.fxml").openStream());
+            Pane root = loader.load(getClass().getResource("Parser/parserSettings.fxml").openStream());
             Stage loggerSettingsStage = new Stage();
             loggerSettingsStage.setScene(new Scene(root));
+            loggerSettingsStage.setTitle("Parser settings");
             loggerSettingsStage.show();
             ((ParserSettingController) loader.getController()).setLastAction(codePreparer::setParser);
         } catch (IOException e) {

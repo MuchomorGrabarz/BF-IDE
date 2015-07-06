@@ -1,6 +1,6 @@
 package test;
 
-import BFIDE.BFNode;
+import BFIDE.Tape.BFNode;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
@@ -8,7 +8,7 @@ import BFIDE.HeartOfEverything.Debugger;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
-import BFIDE.Tape;
+import BFIDE.Tape.Tape;
 import BFIDE.UIMessages;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,10 +1,10 @@
 package BFIDE.HeartOfEverything;
 
-import BFIDE.BFNode;
+import BFIDE.Tape.BFNode;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
-import BFIDE.Tape;
+import BFIDE.Tape.Tape;
 import BFIDE.UIMessages;
 
 import java.util.List;
@@ -39,14 +39,12 @@ public class Debugger extends Executor {
             logger.alert(UIMessages.programEnded);
     }
     public void run() {
-        if(memoryTape.getPosition() >= memoryTape.getLength()) {
+
+        if(codeTape.getPosition() >= codeTape.getLength()) {
             logger.alert(UIMessages.alreadyEnded);
             return;
         }
-
-        while(codeTape.getPosition() < codeTape.getLength() && !codeTape.getValue().isBreakpoint()) {
-            step();
-        }
+        do step(); while(codeTape.getPosition() < codeTape.getLength() && !codeTape.getValue().isBreakpoint());
 
         logger.alert(UIMessages.programEnded);
     }
