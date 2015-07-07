@@ -57,19 +57,16 @@ public class Controller {
     Interpreter interpreter;
 
     TapeCaretaker codeTapeCaretaker, dataTapeCaretaker;
-    private Stage consoleStage = null;
-
 
     private enum State {DEBUGGER, INTERPRETER}
-
     State state;
 
     //stages
 
-    Stage loggerSettingsStage = null;
-    Stage parserSettingsStage = null;
-    Stage converterStage = null;
-    Stage consoleLogStage = null;
+    private Stage loggerSettingsStage = null;
+    private Stage parserSettingsStage = null;
+    private Stage converterStage = null;
+    private Stage consoleStage = null;
 
     public void initialize() {
         state = State.INTERPRETER;
