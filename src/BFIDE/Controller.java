@@ -64,6 +64,13 @@ public class Controller {
 
     State state;
 
+    //stages
+
+    Stage loggerSettingsStage = null;
+    Stage parserSettingsStage = null;
+    Stage converterStage = null;
+    Stage consoleLogStage = null;
+
     public void initialize() {
         state = State.INTERPRETER;
 
@@ -195,16 +202,19 @@ public class Controller {
     }
 
     public void convert() throws IOException {
-        try {
+        if(converterStage != null) {
+            converterStage.show();
+        } else try {
             FXMLLoader loader = new FXMLLoader();
             Pane root = loader.load(getClass().getResource("Converter/converter.fxml").openStream());
-            Stage loggerSettingsStage = new Stage();
-            loggerSettingsStage.setScene(new Scene(root));
-            loggerSettingsStage.show();
+            converterStage = new Stage();
+            converterStage.setScene(new Scene(root));
+            converterStage.show();
             ((ConverterController) loader.getController()).init(loggerSettingsStage,codeArea);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void next() {
@@ -215,9 +225,12 @@ public class Controller {
     }
 
     public void showLoggerSettings() {
-        try {
+        if(loggerSettingsStage != null) {
+            loggerSettingsStage.show();
+        }
+        else try {
             Pane root = FXMLLoader.load(getClass().getResource("Logging/loggerSettings.fxml"));
-            Stage loggerSettingsStage = new Stage();
+            loggerSettingsStage = new Stage();
             loggerSettingsStage.setScene(new Scene(root));
             loggerSettingsStage.setTitle("Logger settings");
             loggerSettingsStage.show();
@@ -226,16 +239,20 @@ public class Controller {
         }
     }
     public void showParserSettings() {
-        try {
+        if(parserSettingsStage != null) {
+            parserSettingsStage.show();
+        }
+        else try {
             FXMLLoader loader = new FXMLLoader();
             Pane root = loader.load(getClass().getResource("Parser/parserSettings.fxml").openStream());
-            Stage loggerSettingsStage = new Stage();
-            loggerSettingsStage.setScene(new Scene(root));
-            loggerSettingsStage.setTitle("Parser settings");
-            loggerSettingsStage.show();
+            parserSettingsStage = new Stage();
+            parserSettingsStage.setScene(new Scene(root));
+            parserSettingsStage.setTitle("Parser settings");
+            parserSettingsStage.show();
             ((ParserSettingController) loader.getController()).setLastAction(codePreparer::setParser);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

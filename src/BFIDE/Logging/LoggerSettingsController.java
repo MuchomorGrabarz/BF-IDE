@@ -10,10 +10,8 @@ public class LoggerSettingsController {
     private enum ImplState {ALERT,CONSOLE}
     private enum AbstState {NOADD, ADD}
 
-    private static ImplState lastImplState = ImplState.CONSOLE;
-    private static AbstState lastAbstState = AbstState.ADD;
-    private ImplState currentImplState;
-    private AbstState currentAbstState;
+    private ImplState currentImplState = ImplState.CONSOLE;
+    private AbstState currentAbstState = AbstState.NOADD;
 
     @FXML
     MenuButton loggerImplMenu;
@@ -24,21 +22,8 @@ public class LoggerSettingsController {
 
 
     public void initialize() {
-        if(lastImplState == ImplState.ALERT) {
-            loggerImplMenu.setText("Alert");
-        } else {
-            loggerImplMenu.setText("Console");
-        }
-
-        currentImplState = lastImplState;
-
-        if(lastAbstState == AbstState.ADD) {
-            loggerAbstMenu.setText("Simple additional text");
-        } else {
-            loggerAbstMenu.setText("No additional text");
-        }
-
-        currentAbstState = lastAbstState;
+        loggerImplMenu.setText("Console");
+        loggerAbstMenu.setText("No additional text");
     }
 
     public void setAlerts() {
@@ -77,9 +62,6 @@ public class LoggerSettingsController {
         } else {
             Logger.setLogger(new NoAdditionsLogger(impl));
         }
-
-        lastImplState = currentImplState;
-        lastAbstState = currentAbstState;
 
         ((Stage) settingLoggerPane.getScene().getWindow()).close();
     }
