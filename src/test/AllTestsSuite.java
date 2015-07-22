@@ -1,6 +1,5 @@
 package test;
 
-import BFIDE.Tape.Tape;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -10,7 +9,7 @@ import org.junit.runners.Suite;
         DebuggerInterpreterTest.class,
         DebuggerTest.class,
         SimpleParserTest.class,
-        Tape.class
+        TapeTest.class
 })
 
 public class AllTestsSuite {}

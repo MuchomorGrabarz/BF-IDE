@@ -20,7 +20,7 @@ public class Interpreter extends Executor {
     }
 
     public void run() {
-        while(codeTape.getPosition() < codeTape.getLength()) {
+        while(!cancelled && codeTape.getPosition() < codeTape.getLength()) {
             step();
         }
 

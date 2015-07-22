@@ -4,5 +4,4 @@ public interface OutputWrapper {
     void reset();
 
     void putChar(Character c);
-    void setText(String text);
 }

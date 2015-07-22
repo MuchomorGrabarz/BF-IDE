@@ -24,6 +24,8 @@ public abstract class Executor {
     private Integer tapeSize = 30000;
     private List<BFNode> initTab;
 
+    protected boolean cancelled = false;
+
     public Executor(InputWrapper input, OutputWrapper output, LoggerWrapper logger, Tape codeTape, Tape memoryTape) {
         this.codeTape = codeTape;
         this.memoryTape = memoryTape;
@@ -49,6 +51,7 @@ public abstract class Executor {
             case ',':
                 if(!input.hasNext()) {
                     logger.warningAlert(UIMessages.noInput);
+                    cancelled = true;
                     return;
                 }
                 memoryTape.getValue().setType(input.getChar());
@@ -67,11 +70,13 @@ public abstract class Executor {
 
         if(memoryTape.getPosition() < 0) {
             logger.warningAlert(UIMessages.negIndexes);
+            cancelled = true;
             return;
         }
 
         if(memoryTape.getPosition() >= tapeSize) {
             logger.warningAlert(UIMessages.outOfTape);
+            cancelled = true;
             return;
         }
 

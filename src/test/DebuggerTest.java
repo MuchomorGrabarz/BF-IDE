@@ -40,32 +40,31 @@ public class DebuggerTest {
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
 
-        codeTape = mock(Tape.class);
-        memoryTape = mock(Tape.class);
+        codeTape = new Tape(); // TODO - very bad, depends highly on other classes
+        memoryTape = new Tape(); // TODO
 
         testedObj = new Debugger(in, out, logger, codeTape, memoryTape);
     }
 
     @Test
     public void testSimpleProgramInteraction() throws Exception {
-        when(in.getText()).thenReturn("a");
+        when(in.hasNext()).thenReturn(Boolean.TRUE, Boolean.FALSE);
+        when(in.getChar()).thenReturn('a');
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('.'));
 
         when(mockedCode.size()).thenReturn(2);
 
-        //BAD TEST
-
         testedObj.prepare(mockedCode);
-        verify(out, times(1)).setText(""); //not so behavioral test, doubtfully good
-        verify(out, times(1)).setText(anyString());
+        verify(out).reset();
+        verify(in).reset();
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(2)).setText("");
-        verify(out, times(2)).setText(anyString());
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(1)).setText("a");
-        verify(out, times(3)).setText(anyString());
+        verify(out, times(1)).putChar('a');
+        verify(out, times(1)).putChar(anyChar());
 
         verify(logger, times(1)).infoAlert(UIMessages.programEnded);
         verify(logger, times(1)).infoAlert(anyString());
@@ -73,7 +72,8 @@ public class DebuggerTest {
 
     @Test
     public void testSimpleProgramInteraction2() throws Exception {
-        when(in.getText()).thenReturn("ab");
+        when(in.hasNext()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+        when(in.getChar()).thenReturn('a', 'b');
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('>'));
@@ -84,29 +84,22 @@ public class DebuggerTest {
 
         when(mockedCode.size()).thenReturn(6);
 
-        //BAD TEST
-
         testedObj.prepare(mockedCode);
-        verify(out, times(1)).setText(""); //not so behavioral test, doubtfully good
-        verify(out, times(1)).setText(anyString());
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(2)).setText("");
-        verify(out, times(2)).setText(anyString());
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(3)).setText("");
-        verify(out, times(3)).setText(anyString());
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(4)).setText("");
-        verify(out, times(4)).setText(anyString());
+        verify(out, times(0)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(1)).setText("b");
-        verify(out, times(5)).setText(anyString());
+        verify(out, times(1)).putChar('b');
+        verify(out, times(1)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(2)).setText("b");
-        verify(out, times(6)).setText(anyString());
+        verify(out, times(1)).putChar(anyChar());
         testedObj.singleStep();
-        verify(out, times(1)).setText("ba");
-        verify(out, times(7)).setText(anyString());
+        verify(out, times(1)).putChar('a');
+        verify(out, times(2)).putChar(anyChar());
 
         verify(logger, times(1)).infoAlert(UIMessages.programEnded);
         verify(logger, times(1)).infoAlert(anyString());
