@@ -1,7 +1,5 @@
 package test;
 
-import BFIDE.Logging.UIMessages;
-import BFIDE.Tape.BFNode;
 import BFIDE.FXIO.FXInput;
 import BFIDE.FXIO.FXLogger;
 import BFIDE.FXIO.FXOutput;
@@ -10,6 +8,8 @@ import BFIDE.HeartOfEverything.Interpreter;
 import BFIDE.IOWrapper.InputWrapper;
 import BFIDE.IOWrapper.LoggerWrapper;
 import BFIDE.IOWrapper.OutputWrapper;
+import BFIDE.Logging.UIMessages;
+import BFIDE.Tape.BFNode;
 import BFIDE.Tape.Tape;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,15 +37,16 @@ public class InterpreterTest {
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
 
-        memoryTape = mock(Tape.class);
-        codeTape = mock(Tape.class);
+        memoryTape = new Tape(); // TODO, very bad, need changing
+        codeTape = new Tape(); // TODO, same as above
 
         testedObj = new Interpreter(in, out, logger, codeTape, memoryTape);
     }
 
     @Test
     public void testSimpleProgram() throws Exception {
-        when(in.getText()).thenReturn("a");
+        when(in.hasNext()).thenReturn(Boolean.TRUE, Boolean.FALSE);
+        when(in.getChar()).thenReturn('a');
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('.'));
@@ -53,15 +54,18 @@ public class InterpreterTest {
         when(mockedCode.size()).thenReturn(new Integer(2));
 
         testedObj.prepare(mockedCode);
+        verify(out).reset();
+        verify(in).reset();
         testedObj.run();
 
-        verify(out).setText("a");
+        verify(out).putChar('a');
         verify(logger).infoAlert(UIMessages.programEnded);
     }
 
     @Test
     public void testSimpleProgram2() throws Exception {
-        when(in.getText()).thenReturn("ab");
+        when(in.hasNext()).thenReturn(Boolean.TRUE, Boolean.TRUE, Boolean.FALSE);
+        when(in.getChar()).thenReturn('a', 'b');
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
         when(mockedCode.get(1)).thenReturn(new BFNode('>'));
@@ -73,16 +77,17 @@ public class InterpreterTest {
         when(mockedCode.size()).thenReturn(new Integer(6));
 
         testedObj.prepare(mockedCode);
+        verify(out).reset();
+        verify(in).reset();
         testedObj.run();
 
-        verify(out).setText("ba");
+        verify(out).putChar('b');
+        verify(out).putChar('a');
         verify(logger).infoAlert(UIMessages.programEnded);
     }
 
     @Test
     public void testLeftBoundCheck() throws Exception {
-        when(in.getText()).thenReturn("");
-
         when(mockedCode.get(0)).thenReturn(new BFNode('<'));
 
         when(mockedCode.size()).thenReturn(new Integer(1));
@@ -95,8 +100,6 @@ public class InterpreterTest {
 
     @Test
     public void testRightBoundCheck() throws Exception {
-        when(in.getText()).thenReturn("");
-
         when(mockedCode.size()).thenReturn(testedObj.tapeSize());
 
         when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
@@ -109,8 +112,6 @@ public class InterpreterTest {
 
     @Test
     public void testTapeSize() throws Exception {
-        when(in.getText()).thenReturn("");
-
         when(mockedCode.size()).thenReturn(testedObj.tapeSize() - 1);
 
         when(mockedCode.get(any(Integer.class))).thenReturn(new BFNode('>'));
@@ -123,7 +124,7 @@ public class InterpreterTest {
 
     @Test
     public void testInsufficientInput() throws Exception {
-        when(in.getText()).thenReturn("");
+        when(in.hasNext()).thenReturn(Boolean.FALSE);
 
         when(mockedCode.get(0)).thenReturn(new BFNode(','));
 

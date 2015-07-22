@@ -5,5 +5,4 @@ public interface InputWrapper {
 
     boolean hasNext();
     char getChar();
-    String getText();
 }

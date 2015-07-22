@@ -24,17 +24,14 @@ public class Tape {
         listeners.forEach(BFIDE.Listener::punch);
     }
 
-    public int getPosition() {
-        return pos;
-    }
+    public int getPosition() { return pos; }
+
     public void setPosition(int pos) {
         this.pos = pos;
         listeners.forEach(BFIDE.Listener::punch);
     }
 
-    public void registerListener(Listener listener) {
-        listeners.add(listener);
-    }
+    public void registerListener(Listener listener) { listeners.add(listener); }
     public void removeListener(Listener listener) {
         listeners.remove(listener);
     }

@@ -28,8 +28,8 @@ public class DebuggerInterpreterTest extends InterpreterTest {
         logger = mock(FXLogger.class);
         mockedCode = mock(ArrayList.class);
 
-        codeTape = mock(Tape.class);
-        memoryTape = mock(Tape.class);
+        codeTape = new Tape(); // TODO very bad, to change
+        memoryTape = new Tape(); // TODO as above - needs changing
 
         testedObj = new Debugger(in, out, logger,codeTape,memoryTape);
     }
