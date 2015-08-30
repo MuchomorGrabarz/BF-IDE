@@ -13,6 +13,7 @@ import BFIDE.Tape.BFNode;
 import BFIDE.Tape.Tape;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,10 @@ public class InterpreterTest {
 
     @Before
     public void mockStreamAndList() {
-        in = mock(FXInput.class);
-        out = mock(FXOutput.class);
-        logger = mock(FXLogger.class);
-        mockedCode = mock(ArrayList.class);
+        in = Mockito.mock(FXInput.class);
+        out = Mockito.mock(FXOutput.class);
+        logger = Mockito.mock(FXLogger.class);
+        mockedCode = Mockito.mock(ArrayList.class);
 
         memoryTape = new Tape(); // TODO, very bad, need changing
         codeTape = new Tape(); // TODO, same as above

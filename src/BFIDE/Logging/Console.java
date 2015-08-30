@@ -26,6 +26,13 @@ public class Console {
     public void registerListener(Listener l) {
         listeners.add(l);
     }
+    public void removeListener(Listener l) {
+        listeners.remove(l);
+    }
+
+    public void clear() {
+        logs.clear();
+    }
 
     private Console() {
 

@@ -154,8 +154,7 @@ public class Controller {
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
-                ((BreakpointSettingController) loader.getController()).init(nodes, x -> {
-                });
+                ((BreakpointSettingController) loader.getController()).init(nodes);
                 final List<BFNode> finalNodes = nodes;
                 ((BreakpointSettingController) loader.getController()).setLastAction(() -> debugger.prepare(finalNodes));
                 Platform.runLater(loggerSettingsStage::show);

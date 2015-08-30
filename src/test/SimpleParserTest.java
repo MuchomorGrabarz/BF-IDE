@@ -27,4 +27,20 @@ public class SimpleParserTest {
         assertEquals("Jumps pointers are not assigned correctly 4", test_result.get(4).getJump(), new Integer(7));
         assertEquals("Jumps pointers are not assigned correctly 5", test_result.get(7).getJump(), new Integer(4));
     }
+
+    @Test
+    public void testParsingSampleCodeWithLinebreaks() {
+        List<BFNode> test_result = parser.parse(">>\nASDCS\n>,Bppp<k.\n+B-A");
+
+        assertEquals("Incorrect size of list of nodes", test_result.size(), 8);
+
+        assertEquals("Type of 1 node is not correct", test_result.get(0).getType(), '>');
+        assertEquals("Type of 2 node is not correct", test_result.get(1).getType(), '>');
+        assertEquals("Type of 3 node is not correct", test_result.get(2).getType(), '>');
+        assertEquals("Type of 4 node is not correct", test_result.get(3).getType(), ',');
+        assertEquals("Type of 5 node is not correct", test_result.get(4).getType(), '<');
+        assertEquals("Type of 6 node is not correct", test_result.get(5).getType(), '.');
+        assertEquals("Type of 7 node is not correct", test_result.get(6).getType(), '+');
+        assertEquals("Type of 8 node is not correct", test_result.get(7).getType(), '-');
+    }
 }

@@ -8,8 +8,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 
 public class BreakpointSettingController {
 
@@ -21,7 +19,7 @@ public class BreakpointSettingController {
     private List<BFNode> nodes;
     private Runnable lastAction;
 
-    public void init(List<BFNode> nodes, Consumer<Set<Integer>> consumer) {
+    public void init(List<BFNode> nodes) {
         this.nodes = nodes;
 
         boolean isNewLineNeeded = true;
