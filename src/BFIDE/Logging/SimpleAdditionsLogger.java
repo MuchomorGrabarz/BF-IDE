@@ -7,11 +7,10 @@ public class SimpleAdditionsLogger extends Logger {
 
     @Override
     public void logWarning(String text) {
-        this.log("Warning:\n" + text);
+        this.log(UILoggerMessages.warning + text);
     }
 
     @Override
-    public void logInfo(String text) {
-        this.log("Info:\n" + text);
+    public void logInfo(String text) { this.log(UILoggerMessages.info + text);
     }
 }

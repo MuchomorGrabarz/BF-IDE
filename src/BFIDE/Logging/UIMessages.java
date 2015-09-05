@@ -1,6 +1,9 @@
 package BFIDE.Logging;
 
 public class UIMessages {
+    /*
+    A class which groups all UI messages for easy modification and testing.
+     */
     public static final String noInput = "Insufficient input given";
     public static final String negIndexes = "Program pointer is at negative indexes";
     public static final String outOfTape = "Program pointer moved to indexes bigger than tapeView size";
