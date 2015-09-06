@@ -8,11 +8,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.Objects;
+
+import static org.junit.Assert.assertEquals;
 
 public class ConsoleTest {
 
-    Console console = Console.getConsole();
+    Console console;
 
     @Mock
     private Listener mockedListener1;
@@ -23,11 +24,7 @@ public class ConsoleTest {
     public void prepareMocks() {
         mockedListener1 = Mockito.mock(Listener.class);
         mockedListener2 = Mockito.mock(Listener.class);
-    }
-
-    @Test
-    public void logWithoutListeners() {
-        console.log("Simple log.");
+        console = Console.getConsole();
     }
 
     @Test
@@ -39,9 +36,22 @@ public class ConsoleTest {
 
         Mockito.verify(mockedListener1, Mockito.times(1)).punch();
         Mockito.verify(mockedListener2, Mockito.times(1)).punch();
+    }
 
-        console.removeListener(mockedListener1);
-        console.removeListener(mockedListener2);
+    @Test
+    public void logWithoutListeners() {
+        console.log("No listeners yet.");
+
+        console.registerListener(mockedListener1);
+        console.registerListener(mockedListener2);
+
+        Mockito.verify(mockedListener1, Mockito.times(0)).punch();
+        Mockito.verify(mockedListener2, Mockito.times(0)).punch();
+
+        console.log("Now someone listens.");
+
+        Mockito.verify(mockedListener1, Mockito.times(1)).punch();
+        Mockito.verify(mockedListener2, Mockito.times(1)).punch();
     }
 
     @Test
@@ -53,9 +63,9 @@ public class ConsoleTest {
 
         List<String> l = console.getLogs();
 
-        assert l.size() == 2;
+        assertEquals("Amount of loggs gathered is not correct", l.size(), 2);
 
-        assert Objects.equals(l.get(0), "First");
-        assert Objects.equals(l.get(1), "Second");
+        assertEquals("First log is not correct", l.get(0), "First");
+        assertEquals("Second log is not correct", l.get(1), "Second");
     }
 }
