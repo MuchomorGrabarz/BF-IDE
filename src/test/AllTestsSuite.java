@@ -9,6 +9,8 @@ import org.junit.runners.Suite;
         DebuggerInterpreterTest.class,
         InterpreterTest.class,
         DebuggerTest.class,
+        ParserIgnoringCShortCommentsTest.class,
+        ParserIgnoringShellCommentsTest.class,
         SimpleParserTest.class,
         TapeTest.class
 })
